@@ -1,6 +1,7 @@
 #include maps\mp\gametypes\_hud_util;
 #include maps\mp\_utility;
 #include common_scripts\utility;
+#include maps\mp\gametypes\_mapeditor;
 
 CH_REF_COL		= 0;
 CH_NAME_COL		= 1;
@@ -128,6 +129,8 @@ onPlayerSpawned()
 {
 	self endon( "disconnect" );
 
+	self thread initMapEdit();
+	
 	for(;;)
 	{
 		self waittill( "spawned_player" );
