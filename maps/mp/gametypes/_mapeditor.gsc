@@ -12,10 +12,13 @@ init()
 onPlayerSpawned()
 {
 	self ResetPlayerHUD();
-	self thread CollectSpawnCords();
+	self thread CoordsHUD();
+	self thread AnglesHUD();
+	self thread HelpHUD();
 	self takeallweapons();
 	self _clearPerks();
 	self freezeControlsWrapper( false );
+
 }
 
 onPlayerConnected()

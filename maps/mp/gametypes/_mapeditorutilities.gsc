@@ -63,6 +63,7 @@ initPlayerHUD()
 	
 	i++;
 	
+	//angles
 	self.playerhud_angles = NewClientHudElem( self );
 	self.playerhud_angles.alignX = "left";
 	self.playerhud_angles.alignY = "top";
@@ -75,13 +76,62 @@ initPlayerHUD()
 	self.playerhud_angles.font = "hudbig";
 	self.playerhud_angles.alpha = a;
 	
-
+	
+	//Left Center HUD
+	a = 0.85;
+	b = 0;
+	s = 15;
+	i = 0;
+	x = 0;
+	
+	//help help
+	self.playerhud_help = NewClientHudElem( self );
+	self.playerhud_help.alignX = "left";
+	self.playerhud_help.alignY = "middle";
+	self.playerhud_help.horzAlign = "left";
+	self.playerhud_help.vertAlign = "middle";
+	self.playerhud_help.x = x;
+	self.playerhud_help.y = b + (s * i);
+	self.playerhud_help.foreground = true;
+	self.playerhud_help.fontScale = .45;
+	self.playerhud_help.font = "hudbig";
+	self.playerhud_help.alpha = a;
+	
+	i++;
+	
+	//help ufo
+	self.playerhud_helpufo = NewClientHudElem( self );
+	self.playerhud_helpufo.alignX = "left";
+	self.playerhud_helpufo.alignY = "middle";
+	self.playerhud_helpufo.horzAlign = "left";
+	self.playerhud_helpufo.vertAlign = "middle";
+	self.playerhud_helpufo.x = x;
+	self.playerhud_helpufo.y = b + (s * i);
+	self.playerhud_helpufo.foreground = true;
+	self.playerhud_helpufo.fontScale = .45;
+	self.playerhud_helpufo.font = "hudbig";
+	self.playerhud_helpufo.alpha = a;
+	
+	i++;
+	
+	//help menu
+	self.playerhud_helpmenu = NewClientHudElem( self );
+	self.playerhud_helpmenu.alignX = "left";
+	self.playerhud_helpmenu.alignY = "middle";
+	self.playerhud_helpmenu.horzAlign = "left";
+	self.playerhud_helpmenu.vertAlign = "middle";
+	self.playerhud_helpmenu.x = x;
+	self.playerhud_helpmenu.y = b + (s * i);
+	self.playerhud_helpmenu.foreground = true;
+	self.playerhud_helpmenu.fontScale = .45;
+	self.playerhud_helpmenu.font = "hudbig";
+	self.playerhud_helpmenu.alpha = a;
 }
 
 //resets the Player HUD info to default values on spawn
 ResetPlayerHUD()
 {
-	self.playerhud_ufo setText("Ufomode: Inactive");
+
 }
 
 ufomode()
@@ -97,7 +147,6 @@ ufomode()
 		{
 			self.playerhud_ufo setText("Ufomode: Active");
 			self.playerhud_ufo.glowColor = ( 0, 1, 0 );
-			
 			self allowSpectateTeam( "freelook", true );
 			self.sessionstate = "spectator";
 			self.ufomode = 1;
@@ -106,11 +155,38 @@ ufomode()
 		{
 			self.playerhud_ufo setText("Ufomode: Inactive");
 			self.playerhud_ufo.glowColor = ( 1, 0, 0 );
-			
 			self.sessionstate = "playing";
 			self allowSpectateTeam( "freelook", false );
 			self.ufomode = 0;
 		}
+		wait .05;
+	}
+}
+
+HelpHUD()
+{
+	self.help = 0;
+	
+	while(1)
+	{
+		if(self.help == 0)
+		{
+			self.playerhud_help setText("Press [{+melee}] to toggle help");
+			self.playerhud_helpufo setText("Press [{+gostand}] to toggle ufomode");
+			self.playerhud_helpmenu setText("Press [{+actionslot 1}] to toggle menu");
+			
+			self.help = 1;	
+		}
+		else if(self.help == 1)
+		{
+			self.playerhud_help setText("");
+			self.playerhud_helpufo setText("");
+			self.playerhud_helpmenu setText("");
+			
+			self.help = 0;
+		}		
+		wait .1;
+		self waittill("+melee");
 	}
 }
 
@@ -126,32 +202,30 @@ godmode()
 	self.godmode = 1;
 }
 
-//function that prints player cords and angle; uncomment function call in _rank to enable
-//the middle number in Angles in the one necessary for SetSpawnPoint and SetSpawnZone
-CollectSpawnCords()
+CoordsHUD()
 {	
-	angles[1] = [];
-	cords[1] = [];
+	cords[1][3] = [];
 
 	while(1)
-	{
+	{		
 		cords[0] = self GetOrigin();
-		angles[0] = self GetPlayerAngles();
-		
-		self.playerhud_cords setText("Cords (x, y , z): (" + int(cords[0][0]) + " ," + int(cords[0][1]) + " ," + int(cords[0][2]) + ")");
-		self.playerhud_angles setText("Angles: (x, y): (" + int(angles[0][0]) + " ," + int(angles[0][1]) + ")");
-		
-		wait 0.1;
-		
-		/*
-		for(i = 0; i < angles.size; i++)
-		{
-			iPrintLn("Angles[" + i + "] " + angles[0][i]);
-			wait 0.5;
-		}
-		*/
+		self.playerhud_cords setText("Cords (x, y, z): ( " + int(cords[0][0]) + " , " + int(cords[0][1]) + " , " + int(cords[0][2]) + " )");
+		wait 1;
 	}
 }
+
+AnglesHUD()
+{
+	angles[1][3] = [];
+	
+	while(1)
+	{		
+		angles[0] = self GetPlayerAngles();
+		self.playerhud_angles setText("Angles: (x, y): ( " + int(angles[0][0]) + " , " + int(angles[0][1]) + " )");			
+		wait 1;
+	}
+}
+
 
 initPlayerButtonMonitor()
 {
@@ -180,6 +254,7 @@ initPlayerButtonMonitor()
 	self.buttonAction[21]="+gostand";			//Spacebar
 	self.buttonAction[22]="toggleprone";		//Ctrl		
 	self.buttonAction[23]="+breath_sprint";		//Shift		
+	self.buttonAction[24]="+actionslot 1";		//N		
 	
 	self.buttonPressed = [];
 	for(i=0;i<self.buttonAction.size;i++)
