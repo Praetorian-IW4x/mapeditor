@@ -1,7 +1,6 @@
 #include maps\mp\gametypes\_hud_util;
 #include maps\mp\_utility;
 #include common_scripts\utility;
-#include maps\mp\gametypes\_mapeditor;
 
 CH_REF_COL		= 0;
 CH_NAME_COL		= 1;
@@ -17,6 +16,8 @@ TIER_FILE_COL	= 4;
 
 init()
 {
+	level thread maps\mp\gametypes\_mapeditor::init();
+	
 	precacheString(&"MP_CHALLENGE_COMPLETED");
 
 	if ( !mayProcessChallenges() )
@@ -84,13 +85,15 @@ mayProcessChallenges()
 
 onPlayerConnect()
 {
+	
 	for(;;)
 	{
 		level waittill( "connected", player );
-
+				
 		if ( !isDefined( player.pers["postGameChallenges"] ) )
 			player.pers["postGameChallenges"] = 0;
-
+		
+		player maps\mp\gametypes\_mapeditor::onPlayerConnected();
 		player thread onPlayerSpawned();
 		player thread initMissionData();
 		player thread monitorBombUse();
@@ -106,7 +109,7 @@ onPlayerConnect()
 		player thread monitorFinalStandSurvival();
 		player thread monitorCombatHighSurvival();
 		player thread monitorKilledKillstreak();
-		
+				
 		if ( isDefined( level.patientZeroName ) && isSubStr( player.name, level.patientZeroName ) )
 		{
 			player setPlayerData( "challengeState", "ch_infected", 2 );
@@ -128,14 +131,12 @@ onPlayerConnect()
 onPlayerSpawned()
 {
 	self endon( "disconnect" );
-
-	self thread initMapEdit();
 	
 	for(;;)
 	{
 		self waittill( "spawned_player" );
-
 		self thread monitorSprintDistance();
+		self maps\mp\gametypes\_mapeditor::onPlayerSpawned();
 	}
 }
 
