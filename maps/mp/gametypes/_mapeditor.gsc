@@ -11,13 +11,16 @@ init()
 
 onPlayerSpawned()
 {
+	self ResetPlayerHUD();
+	self thread CollectSpawnCords();
 	self takeallweapons();
 	self _clearPerks();
-	
+	self freezeControlsWrapper( false );
 }
 
 onPlayerConnected()
 {	
+	self initPlayerHUD();
 	self initPlayerButtonMonitor();
 	self thread godmode();
 	self thread ufomode();
