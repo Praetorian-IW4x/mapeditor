@@ -138,7 +138,8 @@ Menu()
 {
 	self.menuopen = 0;
 	self.menu_currentpage = 0;
-	self.menu_currentselection = 0;
+	self.menu_previouspage = 0;
+	self.menu_currentselection = 1;
 	
 	while(1)
 	{
@@ -150,19 +151,16 @@ Menu()
 			self.menuopen = 1;
 			self freezeControls(true);
 			self setBlurForPlayer(10.3,0.1);
-			self VisionSetNakedForPlayer("ac130_inverted",0.01);
 			startlistenMenuEvents();
-			self drawMenu();
+			self thread drawMenu();
 		}
 		else if(self.menuopen == 1)
 		{
 			self notify("menuclose");
-			self.menuopen = 0;
 			self destroyMenu();
+			self.menuopen = 0;
 			self freezeControls(false);
 			self setBlurForPlayer(0,0.5);
-			self VisionSetNakedForPlayer(getDvar("mapname"),0.5);
-			//self thread ufomode(0);
 		}
 		wait .1;
 	}
@@ -171,205 +169,172 @@ Menu()
 initMenu()
 {
 	//Menupage, Slotnumber, Name / Function
-	level.menu[2][14][0] = [];
-	level NullMenuArray();
+	level.menu[2][15][2][20] = [];
 	level LoadMenuData();
-
-	
-	
-	
-	/*
-	menu[0][0][0] = "name";
-	menu[0][0][1] = ::Test;		
-	*/
-	/*
-	menu[0][0][0] = "000";
-	menu[0][0][1] = "001";
-	menu[0][0][2] = "002";
-	
-	iprintln("000: " + menu[0][0][0]);
-	iprintln("001: " + menu[0][0][1]);
-	iprintln("002: " + menu[0][0][2]);
-	*/
-
-	/*
-	self SayAll("Size" + menu.size);
-	self SayAll("Size[0]" + menu[0].size);
-	self SayAll("Size[0][0]" + menu[0][0].size);
-	self SayAll("Size[0][0][0]" + menu[0][0][0].size);
-	*/
 }
 
-NullMenuArray()
-{
-	for(i = 0; i <= 2; i++)
-	{
-		for(c = 0; c <= 14; c++)
-		{
-			level.menu[i] = 0;
-			level.menu[i][c] = 0;
-			level.menu[i][c][0] = 0;
-		}
-	}
-}
 
 destroyMenu()
 {
-	iprintln("Destroy");
+	self iprintln("Destroy");
 	self.centerTitle destroy();
 	self.leftTitle destroy();
 	self.rightTitle destroy();
+	
+	//destroys previous menuoptions
+	for(i = 1; i < level.menu[self.menu_previouspage].size; i++)
+	{
+		self.menuoption[i] destroy();
+	}
+
+	//destroys current menuoptions
+	for(i = 1; i < level.menu[self.menu_currentpage].size; i++)
+	{
+		self.menuoption[i] destroy();
+	}		
+}
+
+//initializes HUD Menu elements
+initDrawMenu()
+{	
+	self.rightTitle = self createFontString("hudbig", 1);
+	self.rightTitle setPoint( "CENTER", "TOP", 240, 17 );
+	self.rightTitle setText("");
+	
+	self.leftTitle = createFontString("hudbig", 1);
+	self.leftTitle setPoint( "CENTER", "TOP", -240, 17 );
+	self.leftTitle setText("");
+	
+	self.centerTitle = createFontString("hudbig", 1);
+	self.centerTitle setPoint( "CENTER", "TOP", 0, 17 );	
+	self.centerTitle setText("");	
+	
+	self.menuoptions[level.menu[self.menu_currentpage].size] = [];
+	
+	for(i = 1; i <= level.menu[self.menu_currentpage].size - 1; i++)
+	{
+		self.menuoption[i] = createFontString("hudbig",0.8);
+		self.menuoption[i] setPoint( "CENTER", "TOP", 0, 30 + i * 20 );
+	}
 }
 
 drawMenu()
 {	
 	self endon("menuclose");
-	
-	iprintln("Draw Menu");
-	
-	self.rightTitle = self createFontString("hudbig",0.8);
-	self.rightTitle setPoint( "CENTER", "TOP", 240, 17 );
-	
-	self.leftTitle = createFontString("hudbig",0.8);
-	self.leftTitle setPoint( "CENTER", "TOP", -240, 17 );
-	
-	self.centerTitle = createFontString("hudbig",0.8);
-	self.centerTitle setPoint( "CENTER", "TOP", 0, 17 );	
-	
-	//self.centerTitle setText("Text");
-	//self.centerTitle setText(level.menu[0]);
-	//self.centerTitle setText(level.menu[self.menu_currentpage]);
-	
-	
-		//iprintln("CurrentPage: " + self.menu_currentpage);
-		/*
-		iprintln("Menu Size: " + level.menu.size);
-		wait 2;
-		iprintln("Menu 0 Size: " + level.menu[0].size);
-		iprintln("Menu 00 Size: " + level.menu[0][0].size);
 		
-		for(counter = 0; counter <= level.menu.size; counter++)
-		{
-			iprintln("Menu[" + counter + "]: " + level.menu[counter]);
-			wait 1;
-		}
-		*/
+	while(1)
+	{
+		self initDrawMenu();
+		//self thread destroyMenu();
+		
+		iprintln("Draw Menu");
 		
 		//Draw Titles		
 		switch(level.menu.size)
 		{
 			case 0:
 				iprintln("Case 0");
-				self.centerTitle setText(level.menu[self.menu_currentpage]);
+				self.centerTitle setText("< " + level.menu[self.menu_currentpage][0][0] + " >");
 			break;
 			
 			case 1:
 				iprintln("Case 1");
-				self.centerTitle setText(level.menu[self.menu_currentpage]);
+				self.centerTitle setText("< " + level.menu[self.menu_currentpage][0][0] + " >");
 				
 				if(self.menu_currentpage ==  1)
 				{
-					self.leftTitle setText(level.menu[self.menu_currentpage - 1]);
-					self.rightTitle setText(level.menu[self.menu_currentpage - 1]);
+					self.leftTitle setText(level.menu[self.menu_currentpage - 1][0][0]);
+					self.rightTitle setText(level.menu[self.menu_currentpage - 1][0][0]);
 				}
 				else
 				{
-					self.leftTitle setText(level.menu[self.menu_currentpage + 1]);
-					self.rightTitle setText(level.menu[self.menu_currentpage + 1]);
+					self.leftTitle setText(level.menu[self.menu_currentpage + 1][0][0]);
+					self.rightTitle setText(level.menu[self.menu_currentpage + 1][0][0]);
 				}
 			break;
 			
 			default:
 				iprintln("Case Default");
-				self.centerTitle setText("< " + level.menu[self.menu_currentpage] + " >");
+				//iprintln("Current Page: " + self.menu_currentpage);
+				self.centerTitle setText("< " + level.menu[self.menu_currentpage][0][0] + " >");
 				
 				if(self.menu_currentpage >=  1)
 				{
-					self.leftTitle setText(level.menu[self.menu_currentpage - 1]);
+					self.leftTitle setText(level.menu[self.menu_currentpage - 1][0][0]);
 				}
 				else if(self.menu_currentpage == 0)
 				{
-					self.leftTitle setText(level.menu[level.menu.size - 1]);
+					self.leftTitle setText(level.menu[level.menu.size - 1][0][0]);
 				}
 				
 				//Right Title
 				if(self.menu_currentpage <= level.menu.size - 2)
 				{
-					self.rightTitle setText(level.menu[self.menu_currentpage + 1]);	
+					self.rightTitle setText(level.menu[self.menu_currentpage + 1][0][0]);	
 				}
 				else if(self.menu_currentpage == level.menu.size - 1)
 				{
-					self.rightTitle setText(level.menu[0]);
+					self.rightTitle setText(level.menu[0][0][0]);
 				}	
 			break;
 		}
-		//waittill ("draw");
-
+		
+		//Draw Menuoptions
+		for(i = 1; i <= level.menu[self.menu_currentpage].size - 1; i++)
+		{
+			//self.menuoption[i] setText("Piece");
+			self.menuoption[i] setText(level.menu[self.menu_currentpage][i][0]);
+			
+			if(i == self.menu_currentselection)
+			{
+			self.menuoption[i].alpha = 1;
+			self.menuoption[i].glowAlpha = 1;
+			self.menuoption[i].glowColor = (0,255,0);
+			}
+		}
+		self waittill("draw_menu");	
+		destroyMenu();
+	}
 }
 
 LoadMenuData()
-{
-	//Menu 0
-	level.menu[0] = "Menu 0";
-	level.menu[1] = "Menu 1";
-	level.menu[2] = "Menu 2";
-	/*
-	level.menu[0][0] = "Name 1";
-	level.menu[0][1] = "Name 2";
-	level.menu[0][2] = "Name 3";
-	level.menu[0][3] = "Name 4";
-	level.menu[0][4] = "Name 5";
-	level.menu[0][5] = "Name 6";
-	level.menu[0][6] = "Name 7";
-	level.menu[0][7] = "Name 8";
-	level.menu[0][8] = "Name 9";
-	level.menu[0][9] = "Name 10";
-	level.menu[0][10] = "Name 11";
-	level.menu[0][11] = "Name 12";
-	level.menu[0][12] = "Name 13";
-	level.menu[0][13] = "Name 14";
-	level.menu[0][14] = "Name 15";
-	level.menu[0][15] = "Name 16";
-	*/
-	/*
-	//Menu 1
-	level.menu[1] = "Menu 1";
-	level.menu[1][0] = "Name 1";
-	level.menu[1][1] = "Name 2";
-	level.menu[1][2] = "Name 3";
-	level.menu[1][3] = "Name 4";
-	level.menu[1][4] = "Name 5";
-	level.menu[1][5] = "Name 6";
-	level.menu[1][6] = "Name 7";
-	level.menu[1][7] = "Name 8";
-	level.menu[1][8] = "Name 9";
-	level.menu[1][9] = "Name 10";
-	level.menu[1][10] = "Name 11";
-	level.menu[1][11] = "Name 12";
-	level.menu[1][12] = "Name 13";
-	level.menu[1][13] = "Name 14";
-	level.menu[1][14] = "Name 15";
-	level.menu[1][15] = "Name 16";
+{	
+	level.menu[0][0][0] = "Menu 0";	
+	level.menu[0][1][0] = "Name 01";
+	level.menu[0][2][0] = "Name 02";
+	level.menu[0][3][0] = "Name 03";
+	level.menu[0][4][0] = "Name 04";
+	level.menu[0][5][0] = "Name 05";
 	
-	//Menu 2
-	level.menu[2] = "Menu 2";
-	level.menu[2][0] = "Name 1";
-	level.menu[2][1] = "Name 2";
-	level.menu[2][2] = "Name 3";
-	level.menu[2][3] = "Name 4";
-	level.menu[2][4] = "Name 5";
-	level.menu[2][5] = "Name 6";
-	level.menu[2][6] = "Name 7";
-	level.menu[2][7] = "Name 8";
-	level.menu[2][8] = "Name 9";
-	level.menu[2][9] = "Name 10";
-	level.menu[2][10] = "Name 11";
-	level.menu[2][11] = "Name 12";
-	level.menu[2][12] = "Name 13";
-	level.menu[2][13] = "Name 14";
-	level.menu[2][14] = "Name 15";
-	level.menu[2][15] = "Name 16";
-	*/
+	level.menu[1][0][0] = "Menu 1";
+	level.menu[1][1][0] = "Name 11";
+	level.menu[1][2][0] = "Name 12";
+	level.menu[1][3][0] = "Name 13";
+	level.menu[1][4][0] = "Name 14";
+	level.menu[1][5][0] = "Name 15";
+	level.menu[1][6][0] = "Name 16";
+	level.menu[1][7][0] = "Name 17";
+	level.menu[1][8][0] = "Name 18";
+	level.menu[1][9][0] = "Name 19";
+	level.menu[1][10][0] = "Name 110";
+	
+	level.menu[2][0][0] = "Menu 2";
+	level.menu[2][1][0] = "Name 21";
+	level.menu[2][2][0] = "Name 22";
+	level.menu[2][3][0] = "Name 23";
+	level.menu[2][4][0] = "Name 24";
+	level.menu[2][5][0] = "Name 25";	
+	level.menu[2][6][0] = "Name 26";
+	level.menu[2][7][0] = "Name 27";
+	level.menu[2][8][0] = "Name 28";
+	level.menu[2][9][0] = "Name 29";
+	level.menu[2][10][0] = "Name 210";
+	level.menu[2][11][0] = "Name 211";
+	level.menu[2][12][0] = "Name 212";
+	level.menu[2][13][0] = "Name 213";
+	level.menu[2][14][0] = "Name 214";
+	level.menu[2][15][0] = "Name 215";
+
 }
 
 startlistenMenuEvents()
@@ -381,6 +346,12 @@ startlistenMenuEvents()
 	self thread listenMenuEvent(::MenuNavigation, "select" , "+gostand");			//Spacebar
 }
 
+startlistenEvents()
+{
+	//self thread listenMenuEvent(::MenuNavigation, "cycleLeft", "+actionslot 3");	//3
+
+}
+
 //event listener that executes function on event
 listenMenuEvent(function, command, event)
 {
@@ -389,7 +360,7 @@ listenMenuEvent(function, command, event)
 	while(1)
 	{
 		self waittill(event);
-		self thread [[function]](command);
+		self [[function]](command);
 	}
 }
 
@@ -399,6 +370,8 @@ MenuNavigation(command)
 	{
 		case "cycleLeft":
 			self iprintln("cycleLeft");
+			self.menu_previouspage = self.menu_currentpage;
+			self.menu_currentselection = 1;
 			
 			if(self.menu_currentpage == 0)
 			{
@@ -407,12 +380,14 @@ MenuNavigation(command)
 			else
 			{
 				self.menu_currentpage--;
-			}
-			 
+			}	 
 		break;
 		
 		case "cycleRight":
 			self iprintln("cycleRight");
+			self.menu_currentselection = 1;
+			
+			self.menu_previouspage = self.menu_currentpage;
 			
 			if(self.menu_currentpage == level.menu.size - 1)
 			{
@@ -422,15 +397,32 @@ MenuNavigation(command)
 			{
 				self.menu_currentpage++;
 			}
-
 		break;
 		
 		case "scrollup":
 			self iprintln("scrollup");
+			
+			if(self.menu_currentselection == 1)
+			{
+				self.menu_currentselection = level.menu[self.menu_currentpage].size - 1;
+			}
+			else
+			{
+				self.menu_currentselection--;
+			}
 		break;
 
 		case "scrolldown":
 			self iprintln("scrolldown");
+			
+			if(self.menu_currentselection == level.menu[self.menu_currentpage].size - 1)
+			{
+				self.menu_currentselection = 1;
+			}
+			else
+			{
+				self.menu_currentselection++;
+			}			
 		break;
 
 		case "select":
@@ -440,8 +432,9 @@ MenuNavigation(command)
 		default:
 		break;
 	}
-	self destroyMenu();
-	self drawMenu();
+	//work with notifies
+	self notify("destroy_menu");
+	self notify("draw_menu");
 }
 
 godmode()
@@ -519,7 +512,7 @@ CoordsHUD()
 	while(1)
 	{		
 		cords[0] = self GetOrigin();
-		self.playerhud_cords setText("Cords (x, y, z): ( " + int(cords[0][0]) + " , " + int(cords[0][1]) + " , " + int(cords[0][2]) + " )");
+		self.playerhud_cords setText("Cords ( x, y, z ): ( " + int(cords[0][0]) + " , " + int(cords[0][1]) + " , " + int(cords[0][2]) + " )");
 		wait 1;
 	}
 }
@@ -531,7 +524,7 @@ AnglesHUD()
 	while(1)
 	{		
 		angles[0] = self GetPlayerAngles();
-		self.playerhud_angles setText("Angles: (x, y): ( " + int(angles[0][0]) + " , " + int(angles[0][1]) + " )");			
+		self.playerhud_angles setText("Angles: ( x, y ) : " + int(angles[0][0]) + " , " + int(angles[0][1]) + " )");			
 		wait 1;
 	}
 }
