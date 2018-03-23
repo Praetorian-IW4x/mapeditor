@@ -134,15 +134,336 @@ ResetPlayerHUD()
 
 }
 
-ufomode()
+Menu()
 {
+	self.menuopen = 0;
+	self.menu_currentpage = 0;
+	self.menu_currentselection = 0;
+	
+	while(1)
+	{
+		self waittill("+actionslot 1");
+		
+		if(self.menuopen == 0)
+		{
+			self notify("menuopen");
+			self.menuopen = 1;
+			self freezeControls(true);
+			self setBlurForPlayer(10.3,0.1);
+			self VisionSetNakedForPlayer("ac130_inverted",0.01);
+			startlistenMenuEvents();
+			self drawMenu();
+		}
+		else if(self.menuopen == 1)
+		{
+			self notify("menuclose");
+			self.menuopen = 0;
+			self destroyMenu();
+			self freezeControls(false);
+			self setBlurForPlayer(0,0.5);
+			self VisionSetNakedForPlayer(getDvar("mapname"),0.5);
+			//self thread ufomode(0);
+		}
+		wait .1;
+	}
+}
+
+initMenu()
+{
+	//Menupage, Slotnumber, Name / Function
+	level.menu[2][14][0] = [];
+	level NullMenuArray();
+	level LoadMenuData();
+
+	
+	
+	
+	/*
+	menu[0][0][0] = "name";
+	menu[0][0][1] = ::Test;		
+	*/
+	/*
+	menu[0][0][0] = "000";
+	menu[0][0][1] = "001";
+	menu[0][0][2] = "002";
+	
+	iprintln("000: " + menu[0][0][0]);
+	iprintln("001: " + menu[0][0][1]);
+	iprintln("002: " + menu[0][0][2]);
+	*/
+
+	/*
+	self SayAll("Size" + menu.size);
+	self SayAll("Size[0]" + menu[0].size);
+	self SayAll("Size[0][0]" + menu[0][0].size);
+	self SayAll("Size[0][0][0]" + menu[0][0][0].size);
+	*/
+}
+
+NullMenuArray()
+{
+	for(i = 0; i <= 2; i++)
+	{
+		for(c = 0; c <= 14; c++)
+		{
+			level.menu[i] = 0;
+			level.menu[i][c] = 0;
+			level.menu[i][c][0] = 0;
+		}
+	}
+}
+
+destroyMenu()
+{
+	iprintln("Destroy");
+	self.centerTitle destroy();
+	self.leftTitle destroy();
+	self.rightTitle destroy();
+}
+
+drawMenu()
+{	
+	self endon("menuclose");
+	
+	iprintln("Draw Menu");
+	
+	self.rightTitle = self createFontString("hudbig",0.8);
+	self.rightTitle setPoint( "CENTER", "TOP", 240, 17 );
+	
+	self.leftTitle = createFontString("hudbig",0.8);
+	self.leftTitle setPoint( "CENTER", "TOP", -240, 17 );
+	
+	self.centerTitle = createFontString("hudbig",0.8);
+	self.centerTitle setPoint( "CENTER", "TOP", 0, 17 );	
+	
+	//self.centerTitle setText("Text");
+	//self.centerTitle setText(level.menu[0]);
+	//self.centerTitle setText(level.menu[self.menu_currentpage]);
+	
+	
+		//iprintln("CurrentPage: " + self.menu_currentpage);
+		/*
+		iprintln("Menu Size: " + level.menu.size);
+		wait 2;
+		iprintln("Menu 0 Size: " + level.menu[0].size);
+		iprintln("Menu 00 Size: " + level.menu[0][0].size);
+		
+		for(counter = 0; counter <= level.menu.size; counter++)
+		{
+			iprintln("Menu[" + counter + "]: " + level.menu[counter]);
+			wait 1;
+		}
+		*/
+		
+		//Draw Titles		
+		switch(level.menu.size)
+		{
+			case 0:
+				iprintln("Case 0");
+				self.centerTitle setText(level.menu[self.menu_currentpage]);
+			break;
+			
+			case 1:
+				iprintln("Case 1");
+				self.centerTitle setText(level.menu[self.menu_currentpage]);
+				
+				if(self.menu_currentpage ==  1)
+				{
+					self.leftTitle setText(level.menu[self.menu_currentpage - 1]);
+					self.rightTitle setText(level.menu[self.menu_currentpage - 1]);
+				}
+				else
+				{
+					self.leftTitle setText(level.menu[self.menu_currentpage + 1]);
+					self.rightTitle setText(level.menu[self.menu_currentpage + 1]);
+				}
+			break;
+			
+			default:
+				iprintln("Case Default");
+				self.centerTitle setText("< " + level.menu[self.menu_currentpage] + " >");
+				
+				if(self.menu_currentpage >=  1)
+				{
+					self.leftTitle setText(level.menu[self.menu_currentpage - 1]);
+				}
+				else if(self.menu_currentpage == 0)
+				{
+					self.leftTitle setText(level.menu[level.menu.size - 1]);
+				}
+				
+				//Right Title
+				if(self.menu_currentpage <= level.menu.size - 2)
+				{
+					self.rightTitle setText(level.menu[self.menu_currentpage + 1]);	
+				}
+				else if(self.menu_currentpage == level.menu.size - 1)
+				{
+					self.rightTitle setText(level.menu[0]);
+				}	
+			break;
+		}
+		//waittill ("draw");
+
+}
+
+LoadMenuData()
+{
+	//Menu 0
+	level.menu[0] = "Menu 0";
+	level.menu[1] = "Menu 1";
+	level.menu[2] = "Menu 2";
+	/*
+	level.menu[0][0] = "Name 1";
+	level.menu[0][1] = "Name 2";
+	level.menu[0][2] = "Name 3";
+	level.menu[0][3] = "Name 4";
+	level.menu[0][4] = "Name 5";
+	level.menu[0][5] = "Name 6";
+	level.menu[0][6] = "Name 7";
+	level.menu[0][7] = "Name 8";
+	level.menu[0][8] = "Name 9";
+	level.menu[0][9] = "Name 10";
+	level.menu[0][10] = "Name 11";
+	level.menu[0][11] = "Name 12";
+	level.menu[0][12] = "Name 13";
+	level.menu[0][13] = "Name 14";
+	level.menu[0][14] = "Name 15";
+	level.menu[0][15] = "Name 16";
+	*/
+	/*
+	//Menu 1
+	level.menu[1] = "Menu 1";
+	level.menu[1][0] = "Name 1";
+	level.menu[1][1] = "Name 2";
+	level.menu[1][2] = "Name 3";
+	level.menu[1][3] = "Name 4";
+	level.menu[1][4] = "Name 5";
+	level.menu[1][5] = "Name 6";
+	level.menu[1][6] = "Name 7";
+	level.menu[1][7] = "Name 8";
+	level.menu[1][8] = "Name 9";
+	level.menu[1][9] = "Name 10";
+	level.menu[1][10] = "Name 11";
+	level.menu[1][11] = "Name 12";
+	level.menu[1][12] = "Name 13";
+	level.menu[1][13] = "Name 14";
+	level.menu[1][14] = "Name 15";
+	level.menu[1][15] = "Name 16";
+	
+	//Menu 2
+	level.menu[2] = "Menu 2";
+	level.menu[2][0] = "Name 1";
+	level.menu[2][1] = "Name 2";
+	level.menu[2][2] = "Name 3";
+	level.menu[2][3] = "Name 4";
+	level.menu[2][4] = "Name 5";
+	level.menu[2][5] = "Name 6";
+	level.menu[2][6] = "Name 7";
+	level.menu[2][7] = "Name 8";
+	level.menu[2][8] = "Name 9";
+	level.menu[2][9] = "Name 10";
+	level.menu[2][10] = "Name 11";
+	level.menu[2][11] = "Name 12";
+	level.menu[2][12] = "Name 13";
+	level.menu[2][13] = "Name 14";
+	level.menu[2][14] = "Name 15";
+	level.menu[2][15] = "Name 16";
+	*/
+}
+
+startlistenMenuEvents()
+{
+	self thread listenMenuEvent(::MenuNavigation, "cycleLeft", "+actionslot 3");	//3
+	self thread listenMenuEvent(::MenuNavigation, "cycleRight", "+smoke");			//4
+	self thread listenMenuEvent(::MenuNavigation, "scrollup", "+actionslot 2");		//5
+	self thread listenMenuEvent(::MenuNavigation, "scrolldown", "+actionslot 4");	//6
+	self thread listenMenuEvent(::MenuNavigation, "select" , "+gostand");			//Spacebar
+}
+
+//event listener that executes function on event
+listenMenuEvent(function, command, event)
+{
+	self endon ("menuclose");
+	
+	while(1)
+	{
+		self waittill(event);
+		self thread [[function]](command);
+	}
+}
+
+MenuNavigation(command)
+{
+	switch(command)
+	{
+		case "cycleLeft":
+			self iprintln("cycleLeft");
+			
+			if(self.menu_currentpage == 0)
+			{
+				self.menu_currentpage = level.menu.size - 1;
+			}
+			else
+			{
+				self.menu_currentpage--;
+			}
+			 
+		break;
+		
+		case "cycleRight":
+			self iprintln("cycleRight");
+			
+			if(self.menu_currentpage == level.menu.size - 1)
+			{
+				self.menu_currentpage = 0;
+			}
+			else
+			{
+				self.menu_currentpage++;
+			}
+
+		break;
+		
+		case "scrollup":
+			self iprintln("scrollup");
+		break;
+
+		case "scrolldown":
+			self iprintln("scrolldown");
+		break;
+
+		case "select":
+			self iprintln("select");
+		break;		
+		
+		default:
+		break;
+	}
+	self destroyMenu();
+	self drawMenu();
+}
+
+godmode()
+{	
+	self.playerhud_god setText("Godmode: Active");
+	self.playerhud_god.glowColor = ( 0, 1, 0 );			
+	
+	self.maxhealth=90000;
+	self.health=self.maxhealth;
+	setDvar("bg_fallDamageMaxHeight",9999);
+	setDvar("bg_fallDamageMinHeight",9998);
+	self.godmode = 1;
+}
+
+ufomode(currentstate)
+{	
+	//self endon ("menuopen");
 	maps\mp\gametypes\_spectating::setSpectatePermissions();
-	self.ufomode = 0;
+	self.ufomode = currentstate;
 		
 	while(1)
 	{
-		self waittill("+gostand");
-		
 		if(self.ufomode == 0)
 		{
 			self.playerhud_ufo setText("Ufomode: Active");
@@ -159,6 +480,7 @@ ufomode()
 			self allowSpectateTeam( "freelook", false );
 			self.ufomode = 0;
 		}
+		self waittill("+gostand");
 		wait .05;
 	}
 }
@@ -188,18 +510,6 @@ HelpHUD()
 		wait .1;
 		self waittill("+melee");
 	}
-}
-
-godmode()
-{
-	self.playerhud_god setText("Godmode: Active");
-	self.playerhud_god.glowColor = ( 0, 1, 0 );			
-	
-	self.maxhealth=90000;
-	self.health=self.maxhealth;
-	setDvar("bg_fallDamageMaxHeight",9999);
-	setDvar("bg_fallDamageMinHeight",9998);
-	self.godmode = 1;
 }
 
 CoordsHUD()

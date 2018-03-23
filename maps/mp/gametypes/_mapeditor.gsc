@@ -7,6 +7,7 @@
 init()
 {		
 	level thread maps\mp\gametypes\_mapedit::initMapEdit();	
+	level initMenu();
 }
 
 onPlayerSpawned()
@@ -18,7 +19,7 @@ onPlayerSpawned()
 	self takeallweapons();
 	self _clearPerks();
 	self freezeControlsWrapper( false );
-
+	self thread Menu();
 }
 
 onPlayerConnected()
@@ -26,5 +27,5 @@ onPlayerConnected()
 	self initPlayerHUD();
 	self initPlayerButtonMonitor();
 	self thread godmode();
-	self thread ufomode();
+	self thread ufomode(1);
 }
