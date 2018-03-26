@@ -1,16 +1,15 @@
 #include common_scripts\utility;
 #include maps\mp\_utility;
 #include maps\mp\gametypes\_hud_util;
+#include maps\mp\gametypes\_forge;
 
 //creates the player hud
 initPlayerHUD()
 {
 	//Right Top HUD
-	a = 0.85;
 	b = 0;
 	s = 15;
 	i = 0;
-	x = 0;
 	
 	//ufomode
 	self.playerhud_ufo = NewClientHudElem( self );
@@ -18,12 +17,10 @@ initPlayerHUD()
 	self.playerhud_ufo.alignY = "top";
 	self.playerhud_ufo.horzAlign = "right";
 	self.playerhud_ufo.vertAlign = "top";
-	self.playerhud_ufo.x = x;
 	self.playerhud_ufo.y = b + (s * i);
 	self.playerhud_ufo.foreground = true;
 	self.playerhud_ufo.fontScale = .45;
 	self.playerhud_ufo.font = "hudbig";
-	self.playerhud_ufo.alpha = a;
 
 	i++;
 	
@@ -33,20 +30,16 @@ initPlayerHUD()
 	self.playerhud_god.alignY = "top";
 	self.playerhud_god.horzAlign = "right";
 	self.playerhud_god.vertAlign = "top";
-	self.playerhud_god.x = x;
 	self.playerhud_god.y = b + (s * i);
 	self.playerhud_god.foreground = true;
 	self.playerhud_god.fontScale = .45;
 	self.playerhud_god.font = "hudbig";
-	self.playerhud_god.alpha = a;
 	
 	
 	//Left Top HUD
-	a = 0.85;
 	b = 0;
 	s = 15;
 	i = 0;
-	x = 0;
 	
 	//coordinates
 	self.playerhud_cords = NewClientHudElem( self );
@@ -54,12 +47,10 @@ initPlayerHUD()
 	self.playerhud_cords.alignY = "top";
 	self.playerhud_cords.horzAlign = "left";
 	self.playerhud_cords.vertAlign = "top";
-	self.playerhud_cords.x = x;
 	self.playerhud_cords.y = b + (s * i);
 	self.playerhud_cords.foreground = true;
 	self.playerhud_cords.fontScale = .45;
 	self.playerhud_cords.font = "hudbig";
-	self.playerhud_cords.alpha = a;
 	
 	i++;
 	
@@ -69,20 +60,16 @@ initPlayerHUD()
 	self.playerhud_angles.alignY = "top";
 	self.playerhud_angles.horzAlign = "left";
 	self.playerhud_angles.vertAlign = "top";
-	self.playerhud_angles.x = x;
 	self.playerhud_angles.y = b + (s * i);
 	self.playerhud_angles.foreground = true;
 	self.playerhud_angles.fontScale = .45;
 	self.playerhud_angles.font = "hudbig";
-	self.playerhud_angles.alpha = a;
 	
 	
 	//Left Center HUD
-	a = 0.85;
 	b = 0;
 	s = 15;
 	i = 0;
-	x = 0;
 	
 	//help help
 	self.playerhud_help = NewClientHudElem( self );
@@ -90,12 +77,10 @@ initPlayerHUD()
 	self.playerhud_help.alignY = "middle";
 	self.playerhud_help.horzAlign = "left";
 	self.playerhud_help.vertAlign = "middle";
-	self.playerhud_help.x = x;
 	self.playerhud_help.y = b + (s * i);
 	self.playerhud_help.foreground = true;
 	self.playerhud_help.fontScale = .45;
 	self.playerhud_help.font = "hudbig";
-	self.playerhud_help.alpha = a;
 	
 	i++;
 	
@@ -105,12 +90,10 @@ initPlayerHUD()
 	self.playerhud_helpufo.alignY = "middle";
 	self.playerhud_helpufo.horzAlign = "left";
 	self.playerhud_helpufo.vertAlign = "middle";
-	self.playerhud_helpufo.x = x;
 	self.playerhud_helpufo.y = b + (s * i);
 	self.playerhud_helpufo.foreground = true;
 	self.playerhud_helpufo.fontScale = .45;
 	self.playerhud_helpufo.font = "hudbig";
-	self.playerhud_helpufo.alpha = a;
 	
 	i++;
 	
@@ -120,63 +103,144 @@ initPlayerHUD()
 	self.playerhud_helpmenu.alignY = "middle";
 	self.playerhud_helpmenu.horzAlign = "left";
 	self.playerhud_helpmenu.vertAlign = "middle";
-	self.playerhud_helpmenu.x = x;
 	self.playerhud_helpmenu.y = b + (s * i);
 	self.playerhud_helpmenu.foreground = true;
 	self.playerhud_helpmenu.fontScale = .45;
 	self.playerhud_helpmenu.font = "hudbig";
-	self.playerhud_helpmenu.alpha = a;
-}
+	
+	i++;
+	
+	//help cordsangles
+	self.playerhud_cordsangles = NewClientHudElem( self );
+	self.playerhud_cordsangles.alignX = "left";
+	self.playerhud_cordsangles.alignY = "middle";
+	self.playerhud_cordsangles.horzAlign = "left";
+	self.playerhud_cordsangles.vertAlign = "middle";
+	self.playerhud_cordsangles.y = b + (s * i);
+	self.playerhud_cordsangles.foreground = true;
+	self.playerhud_cordsangles.fontScale = .45;
+	self.playerhud_cordsangles.font = "hudbig";
+	
+	i++;
+	
+	//help build cords notification dismiss
+	self.playerhud_builddismiss = NewClientHudElem( self );
+	self.playerhud_builddismiss.alignX = "left";
+	self.playerhud_builddismiss.alignY = "middle";
+	self.playerhud_builddismiss.horzAlign = "left";
+	self.playerhud_builddismiss.vertAlign = "middle";
+	self.playerhud_builddismiss.y = b + (s * i);
+	self.playerhud_builddismiss.foreground = true;
+	self.playerhud_builddismiss.fontScale = .45;
+	self.playerhud_builddismiss.font = "hudbig";	
+	
+	
+	//Center Bottom HUD
+	b = 0;
+	s = 25;
+	i = 0;
+	
+	//Build Info 1
+	self.playerhud_build1 = NewClientHudElem( self );
+	self.playerhud_build1.alignX = "center";
+	self.playerhud_build1.alignY = "bottom";
+	self.playerhud_build1.horzAlign = "center";
+	self.playerhud_build1.vertAlign = "bottom";
+	self.playerhud_build1.y = b + (s * i);
+	self.playerhud_build1.foreground = true;
+	self.playerhud_build1.fontScale = .8;
+	self.playerhud_build1.font = "hudbig";
 
-//resets the Player HUD info to default values on spawn
-ResetPlayerHUD()
-{
+	i++;
+	
+	//Build Info 2
+	self.playerhud_build2 = NewClientHudElem( self );
+	self.playerhud_build2.alignX = "center";
+	self.playerhud_build2.alignY = "bottom";
+	self.playerhud_build2.horzAlign = "center";
+	self.playerhud_build2.vertAlign = "middle";
+	self.playerhud_build2.y = b + (s * i);
+	self.playerhud_build2.foreground = true;
+	self.playerhud_build2.fontScale = .8;
+	self.playerhud_build2.font = "hudbig";
 
+	
+	//Center Center Aimpoint
+	self.playerhud_aimpoint = NewClientHudElem( self );
+	self.playerhud_aimpoint.alignX = "center";
+	self.playerhud_aimpoint.alignY = "bottom";
+	self.playerhud_aimpoint.horzAlign = "center";
+	self.playerhud_aimpoint.vertAlign = "middle";
+	self.playerhud_aimpoint.y = -7;
+	self.playerhud_aimpoint.foreground = true;
+	self.playerhud_aimpoint.fontScale = 2;
+	self.playerhud_aimpoint.font = "small";
+	self.playerhud_aimpoint SetText(".");
+	
 }
 
 Menu()
 {
-	self.menuopen = 0;
-	self.menu_currentpage = 0;
-	self.menu_previouspage = 0;
-	self.menu_currentselection = 1;
-	
-	while(1)
+	if(self.menuopen == 0)
 	{
-		self waittill("+actionslot 1");
-		
-		if(self.menuopen == 0)
+		self notify("menuopen");
+		self notify("CordsAnglesHUDstop");
+		self.menuopen = 1;
+		self Help();
+		self freezeControls(true);
+		self setBlurForPlayer(10.3,0.1);
+		startlistenMenuEvents();
+		self.playerhud_aimpoint SetText("");
+		self dismissBuildNotification();
+		self thread drawMenu();
+	}
+	else if(self.menuopen == 1)
+	{
+		self destroyMenu();		
+		startlistenNonMenuEvents();
+		self freezeControls(false);
+		self setBlurForPlayer(0,0.5);
+		self.menuopen = 0;
+		self Help();
+		self.playerhud_aimpoint SetText(".");
+		if(self.DisplayCordsAnglesHUD == 1)
+			self thread CordsAnglesHUD();
+		self notify("menuclose");
+	}
+}
+
+NullMenuArray()
+{
+	for(i = 0; i < self.menu.size - 1; i++)
+	{
+		for(c = 0; c < self.menu[i].size - 1; c++)
 		{
-			self notify("menuopen");
-			self.menuopen = 1;
-			self freezeControls(true);
-			self setBlurForPlayer(10.3,0.1);
-			startlistenMenuEvents();
-			self thread drawMenu();
+			for(h = 0; h < self.menu[i][h].size - 1; h++)
+			{
+				self.menu[i][c][h] = 0;
+				self.menu[i][c][h] = 0;
+				self.menu[i][c][h] = 0;
+				self.menu[i][c][h] = 0;				
+			}
 		}
-		else if(self.menuopen == 1)
-		{
-			self notify("menuclose");
-			self destroyMenu();
-			self.menuopen = 0;
-			self freezeControls(false);
-			self setBlurForPlayer(0,0.5);
-		}
-		wait .1;
 	}
 }
 
 initMenu()
 {
 	//Menupage, Slotnumber, Name / Function
-	level.menu[2][15][2][20] = [];
-	level LoadMenuData();
+	self.menu[3][15][3][30] = [];
+	self NullMenuArray();
+	self LoadMenuData();
+	self.menuopen = 0;
+	self.menu_currentpage = 0;
+	self.menu_previouspage = 0;
+	self.menu_currentselection = 1;
 }
 
 
 destroyMenu()
 {
-	self iprintln("Destroy");
 	self.centerTitle destroy();
 	self.leftTitle destroy();
 	self.rightTitle destroy();
@@ -224,21 +288,16 @@ drawMenu()
 		
 	while(1)
 	{
-		self initDrawMenu();
-		//self thread destroyMenu();
-		
-		iprintln("Draw Menu");
+		self initDrawMenu();		
 		
 		//Draw Titles		
 		switch(level.menu.size)
 		{
 			case 0:
-				iprintln("Case 0");
 				self.centerTitle setText("< " + level.menu[self.menu_currentpage][0][0] + " >");
 			break;
 			
 			case 1:
-				iprintln("Case 1");
 				self.centerTitle setText("< " + level.menu[self.menu_currentpage][0][0] + " >");
 				
 				if(self.menu_currentpage ==  1)
@@ -254,8 +313,6 @@ drawMenu()
 			break;
 			
 			default:
-				iprintln("Case Default");
-				//iprintln("Current Page: " + self.menu_currentpage);
 				self.centerTitle setText("< " + level.menu[self.menu_currentpage][0][0] + " >");
 				
 				if(self.menu_currentpage >=  1)
@@ -281,15 +338,17 @@ drawMenu()
 		
 		//Draw Menuoptions
 		for(i = 1; i <= level.menu[self.menu_currentpage].size - 1; i++)
-		{
-			//self.menuoption[i] setText("Piece");
-			self.menuoption[i] setText(level.menu[self.menu_currentpage][i][0]);
-			
+		{		
 			if(i == self.menu_currentselection)
 			{
-			self.menuoption[i].alpha = 1;
-			self.menuoption[i].glowAlpha = 1;
-			self.menuoption[i].glowColor = (0,255,0);
+				self.menuoption[i].alpha = 1;
+				self.menuoption[i].glowAlpha = 1;
+				self.menuoption[i].glowColor = (0,255,0);
+				self.menuoption[i] setText("[ " + level.menu[self.menu_currentpage][i][0] + " ]");
+			}
+			else
+			{
+				self.menuoption[i] setText(level.menu[self.menu_currentpage][i][0]);
 			}
 		}
 		self waittill("draw_menu");	
@@ -299,57 +358,106 @@ drawMenu()
 
 LoadMenuData()
 {	
-	level.menu[0][0][0] = "Menu 0";	
-	level.menu[0][1][0] = "Name 01";
-	level.menu[0][2][0] = "Name 02";
-	level.menu[0][3][0] = "Name 03";
-	level.menu[0][4][0] = "Name 04";
-	level.menu[0][5][0] = "Name 05";
+	level.menu[0][0][0] = "Forge Menu";	
+	level.menu[0][1][0] = "Build Wall";
+	level.menu[0][1][2] = ::buildWall;
 	
-	level.menu[1][0][0] = "Menu 1";
-	level.menu[1][1][0] = "Name 11";
-	level.menu[1][2][0] = "Name 12";
-	level.menu[1][3][0] = "Name 13";
-	level.menu[1][4][0] = "Name 14";
-	level.menu[1][5][0] = "Name 15";
-	level.menu[1][6][0] = "Name 16";
-	level.menu[1][7][0] = "Name 17";
-	level.menu[1][8][0] = "Name 18";
-	level.menu[1][9][0] = "Name 19";
-	level.menu[1][10][0] = "Name 110";
-	
-	level.menu[2][0][0] = "Menu 2";
-	level.menu[2][1][0] = "Name 21";
-	level.menu[2][2][0] = "Name 22";
-	level.menu[2][3][0] = "Name 23";
-	level.menu[2][4][0] = "Name 24";
-	level.menu[2][5][0] = "Name 25";	
-	level.menu[2][6][0] = "Name 26";
-	level.menu[2][7][0] = "Name 27";
-	level.menu[2][8][0] = "Name 28";
-	level.menu[2][9][0] = "Name 29";
-	level.menu[2][10][0] = "Name 210";
-	level.menu[2][11][0] = "Name 211";
-	level.menu[2][12][0] = "Name 212";
-	level.menu[2][13][0] = "Name 213";
-	level.menu[2][14][0] = "Name 214";
-	level.menu[2][15][0] = "Name 215";
+	level.menu[0][2][0] = "Build Ramp";
+	level.menu[0][2][2] = ::buildRamp;	
 
+	level.menu[0][3][0] = "Build Grid";
+	level.menu[0][3][2] = ::buildGrid;	
+	
+	level.menu[0][4][0] = "Build Teleporter";
+	level.menu[0][4][2] = ::buildTeleporter;	
+	
+	level.menu[1][0][0] = "Test Menu";	
+	
+	level.menu[1][1][0] = "Build Crate";
+	level.menu[1][1][2] = ::buildCrate;		
+	
+	level.menu[1][2][0] = "Build Collision Object";
+	level.menu[1][2][2] = ::spawnTestCrate;
+	
+	
+	MapMenuData();		
+}
+
+MapMenuData()
+{
+	level.mapmenu = level.menu.size;
+	
+	switch(getDvar("mapname"))
+	{
+		case "mp_estate":
+			level.menu[level.menu.size][0][0] = "Map Estate";
+			LoadMapMenuData("Small generator", "machinery_generator", ::CallBuildModel, 0);
+			LoadMapMenuData("White pickup", "vehicle_pickup_destructible_mp", ::CallBuildModel, 0);
+			LoadMapMenuData("Small white car", "vehicle_coupe_white_destructible", ::CallBuildModel, 0);
+			LoadMapMenuData("Big black car", "vehicle_suburban_destructible_dull", ::CallBuildModel, 0);
+			LoadMapMenuData("Small black car", "vehicle_luxurysedan_2008_destructible", ::CallBuildModel, 0);
+			LoadMapMenuData("Large electrical transformer", "com_electrical_transformer_large_dam", ::CallBuildModel, 0);
+			LoadMapMenuData("Oxygen tank orange", "machinery_oxygen_tank01", ::CallBuildModel, 0);
+			LoadMapMenuData("File cabinet", "com_filecabinetblackclosed", ::CallBuildModel, 0);
+			LoadMapMenuData("Flatscreen TV", "ma_flatscreen_tv_on_wallmount_02", ::CallBuildModel, 0);		
+		break;
+		
+		default: 
+		break;
+	}
+}
+
+LoadMapMenuData(displayname, modelname, functioncallname, height)
+{
+	m = level.mapmenu;
+	s = level.menu[m].size;
+	level.menu[m][s][0] = displayname;
+	level.menu[m][s][1] = modelname;
+	level.menu[m][s][2] = functioncallname;
+	level.menu[m][s][3] = height;	
+}
+
+CallBuildModel()
+{
+	//BuildModel(displayname, modelname, height)
+	self BuildModel( level.menu[self.menu_currentpage][self.menu_currentselection][0], level.menu[self.menu_currentpage][self.menu_currentselection][1], level.menu[self.menu_currentpage][self.menu_currentselection][3]);
 }
 
 startlistenMenuEvents()
 {
 	self thread listenMenuEvent(::MenuNavigation, "cycleLeft", "+actionslot 3");	//3
 	self thread listenMenuEvent(::MenuNavigation, "cycleRight", "+smoke");			//4
-	self thread listenMenuEvent(::MenuNavigation, "scrollup", "+actionslot 2");		//5
-	self thread listenMenuEvent(::MenuNavigation, "scrolldown", "+actionslot 4");	//6
+	self thread listenMenuEvent(::MenuNavigation, "scrolldown", "+actionslot 2");	//5	
+	self thread listenMenuEvent(::MenuNavigation, "scrollup", "+actionslot 4");		//6
 	self thread listenMenuEvent(::MenuNavigation, "select" , "+gostand");			//Spacebar
 }
 
-startlistenEvents()
+startlistenNonMenuEvents()
 {
-	//self thread listenMenuEvent(::MenuNavigation, "cycleLeft", "+actionslot 3");	//3
+	self thread listenEvent(::ufomode, "weapnext",  "menuopen");						//1/2
+	self thread listenEvent(::dismissBuildNotification, "+actionslot 4", "menuopen");	//6
+}
 
+startpermanentlistenEvents()
+{
+	self thread listenEvent(::Help, "+melee", "disconnect");							//V	
+	self thread listenEvent(::Menu, "+actionslot 1", "disconnect");						//N
+	self thread listenEvent(::toggleCordsAnglesHUD, "+frag", "disconnect");				//G
+	self thread listenEvent(::clearCordsAnglesHUD, "CordsAnglesHUDstop", "disconnect");
+}
+
+listenEvent(function, event, endon_event)
+{
+	if(endon_event != 0)
+	{
+		self endon (endon_event);
+	}
+	
+	while(1)
+	{
+		self waittill(event);
+		self [[function]]();
+	}
 }
 
 //event listener that executes function on event
@@ -369,9 +477,7 @@ MenuNavigation(command)
 	switch(command)
 	{
 		case "cycleLeft":
-			self iprintln("cycleLeft");
 			self.menu_previouspage = self.menu_currentpage;
-			self.menu_currentselection = 1;
 			
 			if(self.menu_currentpage == 0)
 			{
@@ -380,12 +486,18 @@ MenuNavigation(command)
 			else
 			{
 				self.menu_currentpage--;
-			}	 
+			}
+			
+			//Reset menu_currentselection if the page changed
+			if(self.menu_previouspage != self.menu_currentpage)
+			{
+				self.menu_currentselection = 1;
+			}
+			
+			self notify("draw_menu");		
 		break;
 		
 		case "cycleRight":
-			self iprintln("cycleRight");
-			self.menu_currentselection = 1;
 			
 			self.menu_previouspage = self.menu_currentpage;
 			
@@ -397,10 +509,17 @@ MenuNavigation(command)
 			{
 				self.menu_currentpage++;
 			}
+			
+			//Reset menu_currentselection if the page changed
+			if(self.menu_previouspage != self.menu_currentpage)
+			{
+				self.menu_currentselection = 1;
+			}
+			
+			self notify("draw_menu");
 		break;
 		
 		case "scrollup":
-			self iprintln("scrollup");
 			
 			if(self.menu_currentselection == 1)
 			{
@@ -410,10 +529,10 @@ MenuNavigation(command)
 			{
 				self.menu_currentselection--;
 			}
+			self notify("draw_menu");
 		break;
 
 		case "scrolldown":
-			self iprintln("scrolldown");
 			
 			if(self.menu_currentselection == level.menu[self.menu_currentpage].size - 1)
 			{
@@ -422,19 +541,22 @@ MenuNavigation(command)
 			else
 			{
 				self.menu_currentselection++;
-			}			
+			}
+			self notify("draw_menu");			
 		break;
 
 		case "select":
-			self iprintln("select");
+			
+			if(level.menu[self.menu_currentpage][self.menu_currentselection][2] != 0)
+			{
+				self thread [[level.menu[self.menu_currentpage][self.menu_currentselection][2]]]();
+				self Menu();
+			}
 		break;		
 		
 		default:
 		break;
 	}
-	//work with notifies
-	self notify("destroy_menu");
-	self notify("draw_menu");
 }
 
 godmode()
@@ -449,86 +571,107 @@ godmode()
 	self.godmode = 1;
 }
 
-ufomode(currentstate)
+ufomode()
 {	
-	//self endon ("menuopen");
 	maps\mp\gametypes\_spectating::setSpectatePermissions();
-	self.ufomode = currentstate;
 		
-	while(1)
+	if(self.ufomode == 0 && self.menuopen == 0)
 	{
-		if(self.ufomode == 0)
-		{
-			self.playerhud_ufo setText("Ufomode: Active");
-			self.playerhud_ufo.glowColor = ( 0, 1, 0 );
-			self allowSpectateTeam( "freelook", true );
-			self.sessionstate = "spectator";
-			self.ufomode = 1;
-		}
-		else if(self.ufomode == 1)
-		{
-			self.playerhud_ufo setText("Ufomode: Inactive");
-			self.playerhud_ufo.glowColor = ( 1, 0, 0 );
-			self.sessionstate = "playing";
-			self allowSpectateTeam( "freelook", false );
-			self.ufomode = 0;
-		}
-		self waittill("+gostand");
-		wait .05;
+		self.playerhud_ufo setText("Ufomode: Active");
+		self allowSpectateTeam( "freelook", true );
+		self.sessionstate = "spectator";
+		self.ufomode = 1;
 	}
-}
-
-HelpHUD()
-{
-	self.help = 0;
-	
-	while(1)
+	else if(self.ufomode == 1 && self.menuopen == 0)
 	{
-		if(self.help == 0)
-		{
-			self.playerhud_help setText("Press [{+melee}] to toggle help");
-			self.playerhud_helpufo setText("Press [{+gostand}] to toggle ufomode");
-			self.playerhud_helpmenu setText("Press [{+actionslot 1}] to toggle menu");
-			
-			self.help = 1;	
-		}
-		else if(self.help == 1)
-		{
-			self.playerhud_help setText("");
-			self.playerhud_helpufo setText("");
-			self.playerhud_helpmenu setText("");
-			
-			self.help = 0;
-		}		
-		wait .1;
-		self waittill("+melee");
+		self.playerhud_ufo setText("Ufomode: Inactive");
+		self.sessionstate = "playing";
+		self allowSpectateTeam( "freelook", false );
+		self.ufomode = 0;
 	}
 }
 
-CoordsHUD()
-{	
-	cords[1][3] = [];
-
-	while(1)
-	{		
-		cords[0] = self GetOrigin();
-		self.playerhud_cords setText("Cords ( x, y, z ): ( " + int(cords[0][0]) + " , " + int(cords[0][1]) + " , " + int(cords[0][2]) + " )");
-		wait 1;
-	}
-}
-
-AnglesHUD()
+Help()
 {
+	if(self.help == 0 && self.menuopen == 0)
+	{
+		self.playerhud_help setText("Press [{+melee}] to toggle help");
+		self.playerhud_helpufo setText("Press [{weapnext}] to toggle ufomode");
+		self.playerhud_helpmenu setText("Press [{+actionslot 1}] to toggle menu");
+		self.playerhud_cordsangles setText("Press [{+frag}] to toggle cords/angles");	
+		self.playerhud_builddismiss setText("Press [{+actionslot 4}] to dismiss build cords notification");
+		self.help = 1;	
+	}
+	else if(self.help == 0 && self.menuopen == 1)
+	{
+		self.playerhud_help setText("Menu Help");
+		self.playerhud_helpufo setText("");
+		self.playerhud_helpmenu setText("");
+		self.playerhud_cordsangles setText("");
+		self.playerhud_builddismiss setText("");
+		
+		self.help = 1;		
+	}
+	else if(self.help == 1)
+	{
+		self.playerhud_help setText("");
+		self.playerhud_helpufo setText("");
+		self.playerhud_helpmenu setText("");
+		self.playerhud_cordsangles setText("");
+		self.playerhud_builddismiss setText("");
+		
+		self.help = 0;
+	}		
+}
+
+dismissBuildNotification()
+{
+	self.playerhud_build1 SetText("");
+	self.playerhud_build2 SetText("");
+}
+
+initCordsAnglesHUD()
+{
+	self.cords[1][3] = [];
 	angles[1][3] = [];
+}
+
+CordsAnglesHUD()
+{	
+	self endon("CordsAnglesHUDstop");
 	
-	while(1)
-	{		
+	while(self.DisplayCordsAnglesHUD == 1)
+	{
+		self.cords[0] = self GetOrigin();
 		angles[0] = self GetPlayerAngles();
-		self.playerhud_angles setText("Angles: ( x, y ) : " + int(angles[0][0]) + " , " + int(angles[0][1]) + " )");			
+		
+		self.playerhud_cords setText("Cords ( x, y, z ): ( " + int(self.cords[0][0]) + " , " + int(self.cords[0][1]) + " , " + int(self.cords[0][2]) + " )");		
+		self.playerhud_angles setText("Angles: ( x, y ) : ( " + int(angles[0][0]) + " , " + int(angles[0][1]) + " )");			
+
 		wait 1;
 	}
 }
 
+clearCordsAnglesHUD()
+{
+	self.playerhud_cords setText("");
+	self.playerhud_angles setText("");
+}
+
+toggleCordsAnglesHUD()
+{
+	if(self.DisplayCordsAnglesHUD == 1)
+	{
+		self.DisplayCordsAnglesHUD = 0;
+		self notify("CordsAnglesHUDstop");
+		self clearCordsAnglesHUD();
+	}
+	else if(self.DisplayCordsAnglesHUD == 0)
+	{
+		self.DisplayCordsAnglesHUD = 1;
+		self thread CordsAnglesHUD();
+	}
+}
 
 initPlayerButtonMonitor()
 {

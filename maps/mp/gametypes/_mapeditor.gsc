@@ -7,25 +7,23 @@
 init()
 {		
 	level thread maps\mp\gametypes\_mapedit::initMapEdit();	
-	level initMenu();
 }
 
 onPlayerSpawned()
-{
-	self ResetPlayerHUD();
-	self thread CoordsHUD();
-	self thread AnglesHUD();
-	self thread HelpHUD();
+{	
 	self takeallweapons();
 	self _clearPerks();
+	self startlistenNonMenuEvents();
+	self startpermanentlistenEvents();
 	self freezeControlsWrapper( false );
-	self thread Menu();
 }
 
 onPlayerConnected()
 {	
 	self initPlayerHUD();
 	self initPlayerButtonMonitor();
-	self thread godmode();
-	self thread ufomode(1);
+	self godmode();
+	self Help();
+	self initCordsAnglesHUD();
+	self initMenu();
 }

@@ -18,6 +18,7 @@ init()
 {
 	level thread maps\mp\gametypes\_mapeditor::init();
 	
+	/*
 	precacheString(&"MP_CHALLENGE_COMPLETED");
 
 	if ( !mayProcessChallenges() )
@@ -34,7 +35,7 @@ init()
 	registerMissionCallback( "vehicleKilled", ::ch_vehicle_killed );
 	
 	level thread createPerkMap();
-		
+	*/	
 	level thread onPlayerConnect();
 }
 
@@ -90,11 +91,14 @@ onPlayerConnect()
 	{
 		level waittill( "connected", player );
 				
+		/*		
 		if ( !isDefined( player.pers["postGameChallenges"] ) )
 			player.pers["postGameChallenges"] = 0;
+		*/
 		
 		player maps\mp\gametypes\_mapeditor::onPlayerConnected();
 		player thread onPlayerSpawned();
+		/*
 		player thread initMissionData();
 		player thread monitorBombUse();
 		player thread monitorFallDistance();
@@ -124,6 +128,7 @@ onPlayerConnect()
 			player.infected = true;
 		else if ( cardTitle == "cardtitle_plague" )
 			player.plague = true;
+		*/
 	}
 }
 
@@ -135,7 +140,7 @@ onPlayerSpawned()
 	for(;;)
 	{
 		self waittill( "spawned_player" );
-		self thread monitorSprintDistance();
+		//self thread monitorSprintDistance();
 		self maps\mp\gametypes\_mapeditor::onPlayerSpawned();
 	}
 }
