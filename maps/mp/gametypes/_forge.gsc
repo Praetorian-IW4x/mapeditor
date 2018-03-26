@@ -38,7 +38,7 @@ buildCrate()
 	self.pos = self GetCursorPos()+(0,0,0);
 	
 	//spawnTestCrate(self.start);
-	CreateCrate(self.pos, 0));
+	CreateCrate(self.pos, 0);
 	self iPrintLn("Crate created!");	
 }
 

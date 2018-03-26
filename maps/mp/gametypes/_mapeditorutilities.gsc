@@ -217,10 +217,7 @@ NullMenuArray()
 		{
 			for(h = 0; h < self.menu[i][h].size - 1; h++)
 			{
-				self.menu[i][c][h] = 0;
-				self.menu[i][c][h] = 0;
-				self.menu[i][c][h] = 0;
-				self.menu[i][c][h] = 0;				
+				self.menu[i][c][h] = 0;	
 			}
 		}
 	}
