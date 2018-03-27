@@ -134,6 +134,19 @@ initPlayerHUD()
 	self.playerhud_builddismiss.fontScale = .45;
 	self.playerhud_builddismiss.font = "hudbig";	
 	
+	i++;
+	
+	//help 5
+	self.playerhud_help5 = NewClientHudElem( self );
+	self.playerhud_help5.alignX = "left";
+	self.playerhud_help5.alignY = "middle";
+	self.playerhud_help5.horzAlign = "left";
+	self.playerhud_help5.vertAlign = "middle";
+	self.playerhud_help5.y = b + (s * i);
+	self.playerhud_help5.foreground = true;
+	self.playerhud_help5.fontScale = .45;
+	self.playerhud_help5.font = "hudbig";		
+	
 	
 	//Center Bottom HUD
 	b = 0;
@@ -366,7 +379,10 @@ LoadMenuData()
 	level.menu[0][3][2] = ::buildGrid;	
 	
 	level.menu[0][4][0] = "Build Teleporter";
-	level.menu[0][4][2] = ::buildTeleporter;	
+	level.menu[0][4][2] = ::buildTeleporter;
+
+	level.menu[0][5][0] = "Forgemode";
+	level.menu[0][5][2] = ::ForgeMode;	
 	
 	level.menu[1][0][0] = "Test Menu";	
 	
@@ -375,6 +391,9 @@ LoadMenuData()
 	
 	level.menu[1][2][0] = "Build Collision Object";
 	level.menu[1][2][2] = ::spawnTestCrate;
+
+	level.menu[1][2][0] = "Build Collision Object";
+	level.menu[1][2][2] = ::spawnTestCrate;	
 	
 	
 	MapMenuData();		
@@ -422,50 +441,62 @@ CallBuildModel()
 
 startlistenMenuEvents()
 {
-	self thread listenMenuEvent(::MenuNavigation, "cycleLeft", "+actionslot 3");	//3
-	self thread listenMenuEvent(::MenuNavigation, "cycleRight", "+smoke");			//4
-	self thread listenMenuEvent(::MenuNavigation, "scrolldown", "+actionslot 2");	//5	
-	self thread listenMenuEvent(::MenuNavigation, "scrollup", "+actionslot 4");		//6
-	self thread listenMenuEvent(::MenuNavigation, "select" , "+gostand");			//Spacebar
+	self thread listenEvent(::MenuNavigation, "cycleLeft", "+actionslot 3", "menuclose", 0);	//3
+	self thread listenEvent(::MenuNavigation, "cycleRight", "+smoke", "menuclose", 0);			//4
+	self thread listenEvent(::MenuNavigation, "scrolldown", "+actionslot 2", "menuclose", 0);	//5	
+	self thread listenEvent(::MenuNavigation, "scrollup", "+actionslot 4", "menuclose", 0);		//6
+	self thread listenEvent(::MenuNavigation, "select" , "+gostand", "menuclose", 0);			//Spacebar
 }
 
 startlistenNonMenuEvents()
 {
-	self thread listenEvent(::ufomode, "weapnext",  "menuopen");						//1/2
-	self thread listenEvent(::dismissBuildNotification, "+actionslot 4", "menuopen");	//6
+	self thread listenEvent(::ufomode, 0, "weapnext",  "menuopen", 0);							//1/2
+	self thread listenEvent(::dismissBuildNotification, 0, "+actionslot 4", "menuopen", 0);		//6
 }
 
 startpermanentlistenEvents()
 {
-	self thread listenEvent(::Help, "+melee", "disconnect");							//V	
-	self thread listenEvent(::Menu, "+actionslot 1", "disconnect");						//N
-	self thread listenEvent(::toggleCordsAnglesHUD, "+frag", "disconnect");				//G
-	self thread listenEvent(::clearCordsAnglesHUD, "CordsAnglesHUDstop", "disconnect");
+	self thread listenEvent(::Help, 0, "+melee", "disconnect", 0);								//V	
+	self thread listenEvent(::Menu, 0, "+actionslot 1", "disconnect", 0);						//N
+	self thread listenEvent(::toggleCordsAnglesHUD, 0, "+frag", "disconnect", 0);				//G
+	self thread listenEvent(::clearCordsAnglesHUD, 0, "CordsAnglesHUDstop", "disconnect", 0);
 }
 
-listenEvent(function, event, endon_event)
+startlistenForgeEvents()
 {
-	if(endon_event != 0)
-	{
-		self endon (endon_event);
-	}
-	
-	while(1)
-	{
-		self waittill(event);
-		self [[function]]();
-	}
+	self thread listenEvent(::ForgeSpawnCrate, 0, "+attack", "stopforge", "menuopen");						//LMB
+	self thread listenEvent(::ForgePickupCrate, 0, "+toggleads_throw", "stopforge", 0);						//RMB
+	self thread listenEvent(::EntityManipulation, "decreaseY", "+actionslot 2", "stopforge", "menuopen");	//3
+	self thread listenEvent(::EntityManipulation, "increaseY", "+actionslot 4", "stopforge", "menuopen");	//4
+	self thread listenEvent(::EntityManipulation, "decreaseX", "+actionslot 3", "stopforge", "menuopen");	//5
+	self thread listenEvent(::EntityManipulation, "increaseX", "+smoke", "stopforge", "menuopen");			//6
+	self thread listenEvent(::EntityManipulation, "increaseZ", "+reload", "stopforge", "menuopen");			//R
+	self thread listenEvent(::EntityManipulation, "decreaseZ", "+activate", "stopforge", "menuopen");		//F
 }
 
 //event listener that executes function on event
-listenMenuEvent(function, command, event)
+listenEvent(function, parameter, event, endon_event1, endon_event2)
 {
-	self endon ("menuclose");
-	
+	if(endon_event1 != 0)
+	{
+		self endon (endon_event1);
+	}
+	if(endon_event2 != 0)
+	{
+		self endon (endon_event2);
+	}	
 	while(1)
 	{
-		self waittill(event);
-		self [[function]](command);
+		self waittill(event);		
+		
+		if(parameter != 0)
+		{
+			self [[function]](parameter);
+		}
+		else
+		{
+			self [[function]]();			
+		}
 	}
 }
 
@@ -556,6 +587,30 @@ MenuNavigation(command)
 	}
 }
 
+ForgeMode()
+{
+	if(self.forgemode == 0)
+	{
+		self.forgemode = 1;
+		self.entityselection = 0;
+		self notify("startforge");
+		self.entityx = 0;
+		self.entityy = 0;
+		self.entityz = 0;
+		self startlistenForgeEvents();
+		
+
+	}
+	else
+	{
+		self.forgemode = 0;
+		self notify("stopforge");
+	}
+}
+
+
+
+
 godmode()
 {	
 	self.playerhud_god setText("Godmode: Active");
@@ -590,7 +645,7 @@ ufomode()
 
 Help()
 {
-	if(self.help == 0 && self.menuopen == 0)
+	if(self.help == 0 && self.menuopen == 0 && self.forgemode == 0)	//normal
 	{
 		self.playerhud_help setText("Press [{+melee}] to toggle help");
 		self.playerhud_helpufo setText("Press [{weapnext}] to toggle ufomode");
@@ -599,24 +654,33 @@ Help()
 		self.playerhud_builddismiss setText("Press [{+actionslot 4}] to dismiss build cords notification");
 		self.help = 1;	
 	}
-	else if(self.help == 0 && self.menuopen == 1)
+	else if(self.help == 0 && self.menuopen == 1)	//menu
 	{
-		self.playerhud_help setText("Menu Help");
-		self.playerhud_helpufo setText("");
-		self.playerhud_helpmenu setText("");
-		self.playerhud_cordsangles setText("");
-		self.playerhud_builddismiss setText("");
-		
+		self.playerhud_help setText("Press [{+melee}] to close help");
+		self.playerhud_helpufo setText("Press [{+actionslot 3}] to cycle left");
+		self.playerhud_helpmenu setText("Press [{+smoke}] to cycle right");
+		self.playerhud_cordsangles setText("Press [{+actionslot 2}] to scroll down");
+		self.playerhud_builddismiss setText("Press [{+actionslot 4}] to scroll up");
+		self.playerhud_help5 setText("Press [{+gostand}] to select option");
 		self.help = 1;		
 	}
-	else if(self.help == 1)
+	else if(self.help == 0 && self.forgemode == 1)	//forge
+	{
+		self.playerhud_help setText("Press [{+attack}] to spawn a crate");
+		self.playerhud_helpufo setText("Press [{+toggleads_throw}] to un/select a crate");
+		self.playerhud_helpmenu setText("Press [{+actionslot 3}] / [{+smoke}] to x-rotate selected crate");
+		self.playerhud_cordsangles setText("Press [{+actionslot 2}] / [{+actionslot 4}] to y-rotate selected crate");
+		self.playerhud_builddismiss setText("Press [{+reload}] / [{+activate}] to y-rotate selected crate");
+		self.help = 1;		
+	}	
+	else if(self.help == 1)	//disable
 	{
 		self.playerhud_help setText("");
 		self.playerhud_helpufo setText("");
 		self.playerhud_helpmenu setText("");
 		self.playerhud_cordsangles setText("");
 		self.playerhud_builddismiss setText("");
-		
+		self.playerhud_help5 setText("");
 		self.help = 0;
 	}		
 }

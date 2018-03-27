@@ -75,6 +75,153 @@ buildGrid()
 	CreateGrids(self.startcord, self.endcord, 0);
 }
 
+ForgeSpawnCrate()
+{
+	vec=anglestoforward(self getPlayerAngles());
+	end=(vec[0]*200,vec[1]*200,vec[2]*200);
+	L=BulletTrace(self gettagorigin("tag_eye"),self gettagorigin("tag_eye")+end,0,self)["position"];
+	c=spawn("script_model",L+(0,0,20));
+	c CloneBrushmodelToScriptmodel(level.airDropCrateCollision);
+	c setModel("com_plasticcase_friendly");
+	c PhysicsLaunchServer((0,0,0),(0,0,0));
+	c.angles=self.angles+(0,90,0);
+}
+
+ForgePickupCrate()
+{
+	self endon("stopforge");
+
+	if(self.entityselection == 0)
+	{
+		self.entityselection = 1;
+				
+		vec=anglestoforward(self getPlayerAngles());
+		end=(vec[0]*100,vec[1]*100,vec[2]*100);
+		entity=BulletTrace(self gettagorigin("tag_eye"),self gettagorigin("tag_eye")+(vec[0]*100,vec[1]*100,vec[2]*100),0,self)["entity"];
+		
+		if(isdefined(entity.model))
+		{
+			self MoveCrate(entity);
+		
+			self.playerhud_build1 SetText("Crate (Cords , Angles): " + entity.origin + " , " + entity.angles);
+		}
+		
+		self.entityselection = 0;
+	}
+}
+
+MoveCrate(entity)
+{
+	self endon("+toggleads_throw");
+	self endon("menuopen");
+	
+	while(1)
+	{
+		entity.angles=(self.entityx,self.entityy,self.entityz);
+		vec=anglestoforward(self getPlayerAngles());
+		end=(vec[0]*100,vec[1]*100,vec[2]*100);
+		entity.origin=(self gettagorigin("tag_eye")+end);	
+		//self.playerhud_builddismiss setText("Crate (Cords , Angles): " + entity.origin + " , " + entity.angles);
+		
+		wait 0.02;
+	}
+}
+
+EntityManipulation(command)
+{
+	i = 45;
+	if(self.entityselection == 1)
+	{
+		switch(command)
+		{
+			case "increaseY":
+				self iPrintLn("increaseY");
+				if(self.entityy != 180)
+				{
+					self.entityy = self.entityy + i;
+				}
+				else
+				{
+					self.entityy = -180 + i;
+				}
+				self iPrintLn("Y: " + self.entityy);
+				break;
+				
+			case "decreaseY":
+				self iPrintLn("decreaseY");
+				if(self.entityy != -180)
+				{
+					self.entityy = self.entityy - i;
+				}
+				else
+				{
+					self.entityy = 180 - i;
+				}
+				self iPrintLn("Y: " + self.entityy);
+				break;
+				
+			case "increaseX":
+				self iPrintLn("increaseX");
+				if(self.entityx != 180)
+				{
+					self.entityx = self.entityx + i;
+				}
+				else
+				{
+					self.entityx = -180 + i;
+				}
+				self iPrintLn("X: " + self.entityx);
+				break;
+				
+			case "decreaseX":
+				self iPrintLn("decreaseX");
+				if(self.entityx != -180)
+				{
+					self.entityx = self.entityx - i;
+				}
+				else
+				{
+					self.entityx = 180 - i;
+				}
+				self iPrintLn("X: " + self.entityx);
+				break;
+			
+			case "increaseZ":
+				self iPrintLn("increaseZ");
+				if(self.entityz != 180)
+				{
+					self.entityz = self.entityz + i;
+				}
+				else
+				{
+					self.entityz = -180 + i;
+				}
+				self iPrintLn("Z: " + self.entityz);
+				break;	
+				
+			case "decreaseZ":
+				self iPrintLn("decreaseZ");
+				if(self.entityz != -180)
+				{
+					self.entityz = self.entityz - i;
+				}
+				else
+				{
+					self.entityz = 180 - i;
+				}
+				self iPrintLn("Z: " + self.entityz);
+				break;
+			
+			default:
+				break;
+		}
+	}
+	else
+	{
+		self iPrintLn("Select a crate first!");
+	}
+}
+
 BuildModel(displayname, modelname, height)
 {
 	self.playerhud_build1 SetText("Aim at a location and press [{+actionslot 3}] to build " + displayname);
