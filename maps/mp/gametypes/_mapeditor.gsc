@@ -14,7 +14,7 @@ onPlayerSpawned()
 	self takeallweapons();
 	self _clearPerks();
 	self startlistenNonMenuEvents();
-	self startpermanentlistenEvents();
+	self startlistenPermanentEvents();
 	self freezeControlsWrapper( false );
 }
 
@@ -26,4 +26,5 @@ onPlayerConnected()
 	self Help();
 	self initCordsAnglesHUD();
 	self initMenu();
+	SetDvar("player_sprintUnlimited", "1");
 }

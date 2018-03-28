@@ -103,7 +103,15 @@ ForgePickupCrate()
 		{
 			self MoveCrate(entity);
 		
-			self.playerhud_build1 SetText("Crate (Cords , Angles): " + entity.origin + " , " + entity.angles);
+			self.entitypos[1][3] = [];
+			
+			self.entitypos[0] = entity.origin;
+			
+			entity.origin = (int(self.entitypos[0][0]),int(self.entitypos[0][1]),int(self.entitypos[0][2]));
+			self.playerhud_build1 SetText("Crate (Cords) , (Angles): " + entity.origin + " , " + entity.angles);
+			
+			
+			//self.playerhud_build1 SetText("Crate (Cords , Angles): " + int(self.entitypos[0]) + int(self.entitypos[1]) + int(self.entitypos[2]) + " , " + int(self.entityangles[0]) + int(self.entityangles[1]) + int(self.entityangles[2]));
 		}
 		
 		self.entityselection = 0;
@@ -306,7 +314,7 @@ findScriptBrushModel()
 			iprintln("Found!");
 		}
 	}
-	iprintlnbold("suitable bmodels: " + suitableBrushModels.size);
+	self iprintlnbold("suitable bmodels: " + suitableBrushModels.size);
 	return suitableBrushModels[0];	
 	
 	/*

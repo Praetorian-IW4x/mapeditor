@@ -7,7 +7,6 @@
 initPlayerHUD()
 {
 	//Right Top HUD
-	b = 0;
 	s = 15;
 	i = 0;
 	
@@ -17,7 +16,7 @@ initPlayerHUD()
 	self.playerhud_ufo.alignY = "top";
 	self.playerhud_ufo.horzAlign = "right";
 	self.playerhud_ufo.vertAlign = "top";
-	self.playerhud_ufo.y = b + (s * i);
+	self.playerhud_ufo.y = s * i;
 	self.playerhud_ufo.foreground = true;
 	self.playerhud_ufo.fontScale = .45;
 	self.playerhud_ufo.font = "hudbig";
@@ -30,14 +29,13 @@ initPlayerHUD()
 	self.playerhud_god.alignY = "top";
 	self.playerhud_god.horzAlign = "right";
 	self.playerhud_god.vertAlign = "top";
-	self.playerhud_god.y = b + (s * i);
+	self.playerhud_god.y = s * i;
 	self.playerhud_god.foreground = true;
 	self.playerhud_god.fontScale = .45;
 	self.playerhud_god.font = "hudbig";
 	
 	
 	//Left Top HUD
-	b = 0;
 	s = 15;
 	i = 0;
 	
@@ -47,7 +45,7 @@ initPlayerHUD()
 	self.playerhud_cords.alignY = "top";
 	self.playerhud_cords.horzAlign = "left";
 	self.playerhud_cords.vertAlign = "top";
-	self.playerhud_cords.y = b + (s * i);
+	self.playerhud_cords.y = s * i;
 	self.playerhud_cords.foreground = true;
 	self.playerhud_cords.fontScale = .45;
 	self.playerhud_cords.font = "hudbig";
@@ -60,96 +58,94 @@ initPlayerHUD()
 	self.playerhud_angles.alignY = "top";
 	self.playerhud_angles.horzAlign = "left";
 	self.playerhud_angles.vertAlign = "top";
-	self.playerhud_angles.y = b + (s * i);
+	self.playerhud_angles.y = s * i;
 	self.playerhud_angles.foreground = true;
 	self.playerhud_angles.fontScale = .45;
 	self.playerhud_angles.font = "hudbig";
 	
 	
-	//Left Center HUD
-	b = 0;
+	//Left Center HUD - Help
 	s = 15;
 	i = 0;
 	
-	//help help
-	self.playerhud_help = NewClientHudElem( self );
-	self.playerhud_help.alignX = "left";
-	self.playerhud_help.alignY = "middle";
-	self.playerhud_help.horzAlign = "left";
-	self.playerhud_help.vertAlign = "middle";
-	self.playerhud_help.y = b + (s * i);
-	self.playerhud_help.foreground = true;
-	self.playerhud_help.fontScale = .45;
-	self.playerhud_help.font = "hudbig";
+	//help1
+	self.playerhud_help1 = NewClientHudElem( self );
+	self.playerhud_help1.alignX = "left";
+	self.playerhud_help1.alignY = "middle";
+	self.playerhud_help1.horzAlign = "left";
+	self.playerhud_help1.vertAlign = "middle";
+	self.playerhud_help1.y = s * i;
+	self.playerhud_help1.foreground = true;
+	self.playerhud_help1.fontScale = .45;
+	self.playerhud_help1.font = "hudbig";
 	
 	i++;
 	
-	//help ufo
-	self.playerhud_helpufo = NewClientHudElem( self );
-	self.playerhud_helpufo.alignX = "left";
-	self.playerhud_helpufo.alignY = "middle";
-	self.playerhud_helpufo.horzAlign = "left";
-	self.playerhud_helpufo.vertAlign = "middle";
-	self.playerhud_helpufo.y = b + (s * i);
-	self.playerhud_helpufo.foreground = true;
-	self.playerhud_helpufo.fontScale = .45;
-	self.playerhud_helpufo.font = "hudbig";
+	//help2
+	self.playerhud_help2 = NewClientHudElem( self );
+	self.playerhud_help2.alignX = "left";
+	self.playerhud_help2.alignY = "middle";
+	self.playerhud_help2.horzAlign = "left";
+	self.playerhud_help2.vertAlign = "middle";
+	self.playerhud_help2.y = s * i;
+	self.playerhud_help2.foreground = true;
+	self.playerhud_help2.fontScale = .45;
+	self.playerhud_help2.font = "hudbig";
 	
 	i++;
 	
-	//help menu
-	self.playerhud_helpmenu = NewClientHudElem( self );
-	self.playerhud_helpmenu.alignX = "left";
-	self.playerhud_helpmenu.alignY = "middle";
-	self.playerhud_helpmenu.horzAlign = "left";
-	self.playerhud_helpmenu.vertAlign = "middle";
-	self.playerhud_helpmenu.y = b + (s * i);
-	self.playerhud_helpmenu.foreground = true;
-	self.playerhud_helpmenu.fontScale = .45;
-	self.playerhud_helpmenu.font = "hudbig";
+	//help3
+	self.playerhud_help3 = NewClientHudElem( self );
+	self.playerhud_help3.alignX = "left";
+	self.playerhud_help3.alignY = "middle";
+	self.playerhud_help3.horzAlign = "left";
+	self.playerhud_help3.vertAlign = "middle";
+	self.playerhud_help3.y = s * i;
+	self.playerhud_help3.foreground = true;
+	self.playerhud_help3.fontScale = .45;
+	self.playerhud_help3.font = "hudbig";
 	
 	i++;
 	
-	//help cordsangles
-	self.playerhud_cordsangles = NewClientHudElem( self );
-	self.playerhud_cordsangles.alignX = "left";
-	self.playerhud_cordsangles.alignY = "middle";
-	self.playerhud_cordsangles.horzAlign = "left";
-	self.playerhud_cordsangles.vertAlign = "middle";
-	self.playerhud_cordsangles.y = b + (s * i);
-	self.playerhud_cordsangles.foreground = true;
-	self.playerhud_cordsangles.fontScale = .45;
-	self.playerhud_cordsangles.font = "hudbig";
+	//help4
+	self.playerhud_help4 = NewClientHudElem( self );
+	self.playerhud_help4.alignX = "left";
+	self.playerhud_help4.alignY = "middle";
+	self.playerhud_help4.horzAlign = "left";
+	self.playerhud_help4.vertAlign = "middle";
+	self.playerhud_help4.y = s * i;
+	self.playerhud_help4.foreground = true;
+	self.playerhud_help4.fontScale = .45;
+	self.playerhud_help4.font = "hudbig";
 	
 	i++;
 	
-	//help build cords notification dismiss
-	self.playerhud_builddismiss = NewClientHudElem( self );
-	self.playerhud_builddismiss.alignX = "left";
-	self.playerhud_builddismiss.alignY = "middle";
-	self.playerhud_builddismiss.horzAlign = "left";
-	self.playerhud_builddismiss.vertAlign = "middle";
-	self.playerhud_builddismiss.y = b + (s * i);
-	self.playerhud_builddismiss.foreground = true;
-	self.playerhud_builddismiss.fontScale = .45;
-	self.playerhud_builddismiss.font = "hudbig";	
-	
-	i++;
-	
-	//help 5
+	//help5
 	self.playerhud_help5 = NewClientHudElem( self );
 	self.playerhud_help5.alignX = "left";
 	self.playerhud_help5.alignY = "middle";
 	self.playerhud_help5.horzAlign = "left";
 	self.playerhud_help5.vertAlign = "middle";
-	self.playerhud_help5.y = b + (s * i);
+	self.playerhud_help5.y = s * i;
 	self.playerhud_help5.foreground = true;
 	self.playerhud_help5.fontScale = .45;
-	self.playerhud_help5.font = "hudbig";		
+	self.playerhud_help5.font = "hudbig";	
+	
+	i++;
+	
+	//help 6
+	self.playerhud_help6 = NewClientHudElem( self );
+	self.playerhud_help6.alignX = "left";
+	self.playerhud_help6.alignY = "middle";
+	self.playerhud_help6.horzAlign = "left";
+	self.playerhud_help6.vertAlign = "middle";
+	self.playerhud_help6.y = s * i;
+	self.playerhud_help6.foreground = true;
+	self.playerhud_help6.fontScale = .45;
+	self.playerhud_help6.font = "hudbig";		
 	
 	
 	//Center Bottom HUD
-	b = 0;
 	s = 25;
 	i = 0;
 	
@@ -159,7 +155,7 @@ initPlayerHUD()
 	self.playerhud_build1.alignY = "bottom";
 	self.playerhud_build1.horzAlign = "center";
 	self.playerhud_build1.vertAlign = "bottom";
-	self.playerhud_build1.y = b + (s * i);
+	self.playerhud_build1.y = s * i;
 	self.playerhud_build1.foreground = true;
 	self.playerhud_build1.fontScale = .8;
 	self.playerhud_build1.font = "hudbig";
@@ -172,7 +168,7 @@ initPlayerHUD()
 	self.playerhud_build2.alignY = "bottom";
 	self.playerhud_build2.horzAlign = "center";
 	self.playerhud_build2.vertAlign = "middle";
-	self.playerhud_build2.y = b + (s * i);
+	self.playerhud_build2.y = s * i;
 	self.playerhud_build2.foreground = true;
 	self.playerhud_build2.fontScale = .8;
 	self.playerhud_build2.font = "hudbig";
@@ -184,9 +180,9 @@ initPlayerHUD()
 	self.playerhud_aimpoint.alignY = "bottom";
 	self.playerhud_aimpoint.horzAlign = "center";
 	self.playerhud_aimpoint.vertAlign = "middle";
-	self.playerhud_aimpoint.y = -7;
+	//self.playerhud_aimpoint.y = -7;
 	self.playerhud_aimpoint.foreground = true;
-	self.playerhud_aimpoint.fontScale = 2;
+	self.playerhud_aimpoint.fontScale = 3;
 	self.playerhud_aimpoint.font = "small";
 	self.playerhud_aimpoint SetText(".");
 	
@@ -197,9 +193,8 @@ Menu()
 	if(self.menuopen == 0)
 	{
 		self notify("menuopen");
-		self notify("CordsAnglesHUDstop");
 		self.menuopen = 1;
-		self Help();
+		self Help(0);
 		self freezeControls(true);
 		self setBlurForPlayer(10.3,0.1);
 		startlistenMenuEvents();
@@ -214,10 +209,8 @@ Menu()
 		self freezeControls(false);
 		self setBlurForPlayer(0,0.5);
 		self.menuopen = 0;
-		self Help();
+		self Help(0);
 		self.playerhud_aimpoint SetText(".");
-		if(self.DisplayCordsAnglesHUD == 1)
-			self thread CordsAnglesHUD();
 		self notify("menuclose");
 	}
 }
@@ -441,25 +434,25 @@ CallBuildModel()
 
 startlistenMenuEvents()
 {
-	self thread listenEvent(::MenuNavigation, "cycleLeft", "+actionslot 3", "menuclose", 0);	//3
-	self thread listenEvent(::MenuNavigation, "cycleRight", "+smoke", "menuclose", 0);			//4
-	self thread listenEvent(::MenuNavigation, "scrolldown", "+actionslot 2", "menuclose", 0);	//5	
-	self thread listenEvent(::MenuNavigation, "scrollup", "+actionslot 4", "menuclose", 0);		//6
-	self thread listenEvent(::MenuNavigation, "select" , "+gostand", "menuclose", 0);			//Spacebar
+	self thread listenEvent(::MenuNavigation, "scrollup", "+forward", "menuclose", 0);		//W	
+	self thread listenEvent(::MenuNavigation, "cycleLeft", "+moveleft", "menuclose", 0);	//A
+	self thread listenEvent(::MenuNavigation, "scrolldown", "+back", "menuclose", 0);		//S		
+	self thread listenEvent(::MenuNavigation, "cycleRight", "+moveright", "menuclose", 0);	//D
+	self thread listenEvent(::MenuNavigation, "select" , "+gostand", "menuclose", 0);		//Spacebar
 }
 
 startlistenNonMenuEvents()
 {
-	self thread listenEvent(::ufomode, 0, "weapnext",  "menuopen", 0);							//1/2
-	self thread listenEvent(::dismissBuildNotification, 0, "+actionslot 4", "menuopen", 0);		//6
+	self thread listenEvent(::ufomode, 0, "weapnext",  "menuopen", "death");					//1/2
 }
 
-startpermanentlistenEvents()
+startlistenPermanentEvents()
 {
-	self thread listenEvent(::Help, 0, "+melee", "disconnect", 0);								//V	
+	self thread listenEvent(::Help, 1, "+melee", "disconnect", 0);								//V	
 	self thread listenEvent(::Menu, 0, "+actionslot 1", "disconnect", 0);						//N
 	self thread listenEvent(::toggleCordsAnglesHUD, 0, "+frag", "disconnect", 0);				//G
 	self thread listenEvent(::clearCordsAnglesHUD, 0, "CordsAnglesHUDstop", "disconnect", 0);
+	self thread listenEvent(::dismissBuildNotification, 0, "+actionslot 4", "menuopen", 0);		//6	
 }
 
 startlistenForgeEvents()
@@ -643,46 +636,56 @@ ufomode()
 	}
 }
 
-Help()
-{
-	if(self.help == 0 && self.menuopen == 0 && self.forgemode == 0)	//normal
+Help(toggle)
+{	
+	if(toggle == 1)
 	{
-		self.playerhud_help setText("Press [{+melee}] to toggle help");
-		self.playerhud_helpufo setText("Press [{weapnext}] to toggle ufomode");
-		self.playerhud_helpmenu setText("Press [{+actionslot 1}] to toggle menu");
-		self.playerhud_cordsangles setText("Press [{+frag}] to toggle cords/angles");	
-		self.playerhud_builddismiss setText("Press [{+actionslot 4}] to dismiss build cords notification");
-		self.help = 1;	
+		if(self.help == 0)
+		{
+			self.help = 1;
+		}
+		else
+		{
+			self.help = 0;
+		}
 	}
-	else if(self.help == 0 && self.menuopen == 1)	//menu
+	
+	if(self.help == 1 && self.menuopen == 0 && self.forgemode == 0)	//normal
 	{
-		self.playerhud_help setText("Press [{+melee}] to close help");
-		self.playerhud_helpufo setText("Press [{+actionslot 3}] to cycle left");
-		self.playerhud_helpmenu setText("Press [{+smoke}] to cycle right");
-		self.playerhud_cordsangles setText("Press [{+actionslot 2}] to scroll down");
-		self.playerhud_builddismiss setText("Press [{+actionslot 4}] to scroll up");
-		self.playerhud_help5 setText("Press [{+gostand}] to select option");
-		self.help = 1;		
+		self.playerhud_help1 setText("Press [{+melee}] to toggle help");
+		self.playerhud_help2 setText("Press [{weapnext}] to toggle ufomode");
+		self.playerhud_help3 setText("Press [{+actionslot 1}] to toggle menu");
+		self.playerhud_help4 setText("Press [{+frag}] to toggle cords/angles");	
+		self.playerhud_help5 setText("Press [{+actionslot 4}] to dismiss build cords notification");
+		self.playerhud_help6 setText("");
 	}
-	else if(self.help == 0 && self.forgemode == 1)	//forge
+	else if(self.help == 1 && self.menuopen == 1)	//menu
 	{
-		self.playerhud_help setText("Press [{+attack}] to spawn a crate");
-		self.playerhud_helpufo setText("Press [{+toggleads_throw}] to un/select a crate");
-		self.playerhud_helpmenu setText("Press [{+actionslot 3}] / [{+smoke}] to x-rotate selected crate");
-		self.playerhud_cordsangles setText("Press [{+actionslot 2}] / [{+actionslot 4}] to y-rotate selected crate");
-		self.playerhud_builddismiss setText("Press [{+reload}] / [{+activate}] to y-rotate selected crate");
-		self.help = 1;		
-	}	
-	else if(self.help == 1)	//disable
-	{
-		self.playerhud_help setText("");
-		self.playerhud_helpufo setText("");
-		self.playerhud_helpmenu setText("");
-		self.playerhud_cordsangles setText("");
-		self.playerhud_builddismiss setText("");
+		self.playerhud_help1 setText("Press [{+melee}] to close help");
+		self.playerhud_help2 setText("Press [{+moveleft}]/[{+moveright}] to cycle menu");
+		self.playerhud_help3 setText("Press [{+forward}]/[{+back}] to scroll menu");
+		self.playerhud_help4 setText("Press [{+gostand}] to select option");
 		self.playerhud_help5 setText("");
-		self.help = 0;
-	}		
+		self.playerhud_help6 setText("");
+	}
+	else if(self.help == 1 && self.forgemode == 1)	//forge
+	{
+		self.playerhud_help1 setText("Press [{+attack}] to spawn a crate");
+		self.playerhud_help2 setText("Press [{+toggleads_throw}] to un/select a crate");
+		self.playerhud_help3 setText("Press [{+actionslot 3}] / [{+smoke}] to x-rotate selected crate");
+		self.playerhud_help4 setText("Press [{+actionslot 2}] / [{+actionslot 4}] to y-rotate selected crate");
+		self.playerhud_help5 setText("Press [{+reload}] / [{+activate}] to y-rotate selected crate");
+		self.playerhud_help6 setText("");
+	}	
+	else if(self.help == 0)	//disable
+	{
+		self.playerhud_help1 setText("");
+		self.playerhud_help2 setText("");
+		self.playerhud_help3 setText("");
+		self.playerhud_help4 setText("");
+		self.playerhud_help5 setText("");
+		self.playerhud_help6 setText("");
+	}
 }
 
 dismissBuildNotification()
