@@ -452,7 +452,7 @@ startlistenPermanentEvents()
 	self thread listenEvent(::Menu, 0, "+actionslot 1", "disconnect", 0);						//N
 	self thread listenEvent(::toggleCordsAnglesHUD, 0, "+frag", "disconnect", 0);				//G
 	self thread listenEvent(::clearCordsAnglesHUD, 0, "CordsAnglesHUDstop", "disconnect", 0);
-	self thread listenEvent(::dismissBuildNotification, 0, "+actionslot 4", "menuopen", 0);		//6	
+	self thread listenEvent(::dismissBuildNotification, 0, "weapnext", "disconnect", 0);		//1/2	
 }
 
 startlistenForgeEvents()
@@ -656,7 +656,8 @@ Help(toggle)
 		self.playerhud_help2 setText("Press [{weapnext}] to toggle ufomode");
 		self.playerhud_help3 setText("Press [{+actionslot 1}] to toggle menu");
 		self.playerhud_help4 setText("Press [{+frag}] to toggle cords/angles");	
-		self.playerhud_help5 setText("Press [{+actionslot 4}] to dismiss build cords notification");
+		self.playerhud_help5 setText("");
+		//self.playerhud_help5 setText("Press [{+actionslot 4}] to dismiss build cords notification");
 		self.playerhud_help6 setText("");
 	}
 	else if(self.help == 1 && self.menuopen == 1)	//menu
@@ -676,6 +677,7 @@ Help(toggle)
 		self.playerhud_help4 setText("Press [{+actionslot 2}] / [{+actionslot 4}] to y-rotate selected crate");
 		self.playerhud_help5 setText("Press [{+reload}] / [{+activate}] to y-rotate selected crate");
 		self.playerhud_help6 setText("");
+		//self.playerhud_help6 setText("Press [{weapnext}] to dismiss build cords notification");
 	}	
 	else if(self.help == 0)	//disable
 	{

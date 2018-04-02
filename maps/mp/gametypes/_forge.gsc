@@ -46,7 +46,7 @@ buildWall()
 {
 	self endon ("disconnect");
 	self GetCords();
-	self.playerhud_build1 SetText("Coordinates (Start/End): " + self.start + " " + self.end);
+	self.playerhud_build1 SetText("Coordinates (Start/End): " + self.startcord + " " + self.endcord);
 	CreateWalls(self.startcord, self.endcord);
 
 }
@@ -55,7 +55,7 @@ buildTeleporter()
 {
 	self endon ("disconnect");	
 	self GetCords();
-	self.playerhud_build1 SetText("Coordinates (Start/End): " + self.start + " " + self.end);
+	self.playerhud_build1 SetText("Coordinates (Start/End): " + self.startcord + " " + self.endcord);
 	CreateElevator(self.startcord, self.endcord, 90);	
 }
 
@@ -63,7 +63,7 @@ buildRamp()
 {
 	self endon ("disconnect");	
 	self GetCords();
-	self.playerhud_build1 SetText("Coordinates (Start/End): " + self.start + " " + self.end);
+	self.playerhud_build1 SetText("Coordinates (Start/End): " + self.startcord + " " + self.endcord);
 	CreateRamps(self.startcord, self.endcord);
 }
 
@@ -71,7 +71,7 @@ buildGrid()
 {
 	self endon ("disconnect");	
 	self GetCords();
-	self.playerhud_build1 SetText("Coordinates (Start/End): " + self.start + " " + self.end);
+	self.playerhud_build1 SetText("Coordinates (Start/End): " + self.startcord + " " + self.endcord);
 	CreateGrids(self.startcord, self.endcord, 0);
 }
 
